@@ -134,20 +134,35 @@ A user wants to navigate the application through a menu system with options 1-6 
 - **FR-001**: System MUST store tasks in memory with no persistence to external storage
 - **FR-002**: System MUST assign unique sequential IDs starting from 1 to each task
 - **FR-003**: System MUST allow users to add tasks with required title and optional description
-- **FR-004**: System MUST display all tasks showing ID, title, status [✓/ ], and description
-- **FR-005**: System MUST allow users to update task title or description by ID
-- **FR-006**: System MUST allow users to delete tasks by ID with confirmation
-- **FR-007**: System MUST allow users to toggle task completion status by ID
-- **FR-008**: System MUST provide a menu-driven interface with options 1-6 for different operations
-- **FR-009**: System MUST display complete tasks with [✓] and incomplete tasks with [ ] prefix
-- **FR-010**: System MUST show clear error messages for invalid inputs
-- **FR-011**: System MUST allow users to exit the application cleanly
-- **FR-012**: System MUST validate task IDs and provide appropriate feedback for invalid IDs
+- **FR-004**: System MUST validate task titles to be 1-100 characters in length
+- **FR-005**: System MUST validate task descriptions to be 0-500 characters in length
+- **FR-006**: System MUST display all tasks showing ID, title, status [✓/ ], and description
+- **FR-007**: System MUST allow users to update task title or description by ID
+- **FR-008**: System MUST allow users to delete tasks by ID with confirmation
+- **FR-009**: System MUST require "yes/no" confirmation before deleting a task
+- **FR-010**: System MUST allow users to toggle task completion status by ID
+- **FR-011**: System MUST provide a menu-driven interface with options 1-6 for different operations
+- **FR-012**: System MUST display complete tasks with [✓] and incomplete tasks with [ ] prefix
+- **FR-013**: System MUST show clear error messages for invalid inputs
+- **FR-014**: System MUST provide error messages that clearly state what went wrong and suggest how to fix it
+- **FR-015**: System MUST display a clear error message when a user enters a non-existent task ID
+- **FR-016**: System MUST allow users to exit the application cleanly
+- **FR-017**: System MUST validate task IDs and provide appropriate feedback for invalid IDs
 
 ### Key Entities
 
 - **Task**: Represents a single todo item with attributes: ID (sequential integer starting from 1), title (required string), description (optional string), completion status (boolean)
 - **Task List**: Collection of Task entities stored in memory with functionality to add, view, update, delete, and toggle completion status
+
+## Clarifications
+
+### Session 2025-12-13
+
+- Q: What validation rules should apply to task titles, specifically regarding minimum/maximum length and character restrictions? → A: Titles must be 1-100 characters, no special restrictions
+- Q: What type of confirmation is required before deleting a task? → A: Simple "yes/no" prompt
+- Q: Should there be any character limits on the optional task description field? → A: Descriptions should be limited to 500 characters
+- Q: How specific should error messages be when users provide invalid input? → A: Error messages should clearly state what went wrong and suggest how to fix it
+- Q: What should happen when a user enters a task ID that is syntactically valid (number) but doesn't exist in the system? → A: Display a clear error message that the task ID doesn't exist
 
 ## Success Criteria *(mandatory)*
 
