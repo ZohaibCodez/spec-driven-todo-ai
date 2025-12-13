@@ -285,6 +285,8 @@ This comprehensive setup enables the evolution from a simple console app to a so
 ## Active Technologies
 - Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary (001-backend-api)
 - Neon Serverless PostgreSQL (001-backend-api)
+- TypeScript 5.0+, Next.js 16 with App Router + Next.js 16, React 19, Tailwind CSS 3.4, React Hook Form, Fetch API (001-todo-ui)
+- Browser localStorage for anonymous session management, backend API for task persistence (001-todo-ui)
 
 ## Recent Changes
 - 001-backend-api: Added Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary

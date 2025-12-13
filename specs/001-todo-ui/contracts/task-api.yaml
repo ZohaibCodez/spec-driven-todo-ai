@@ -1,0 +1,249 @@
+# API Contract: Task Management
+
+## Base URL
+```
+http://localhost:8000/api
+```
+
+## Authentication
+All endpoints require a session identifier to be passed in the request headers:
+```
+X-Session-ID: <session-uuid>
+```
+
+## Common Response Format
+
+### Success Response
+```json
+{
+  "success": true,
+  "data": { /* response data */ },
+  "timestamp": "2025-12-13T10:00:00Z"
+}
+```
+
+### Error Response
+```json
+{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable error message",
+    "details": { /* optional error details */ }
+  },
+  "timestamp": "2025-12-13T10:00:00Z"
+}
+```
+
+## Endpoints
+
+### Create Task
+```
+POST /tasks
+```
+
+#### Request
+```json
+{
+  "title": "Task title",
+  "description": "Task description (optional)",
+  "dueDate": "2025-12-31T23:59:59Z (optional)",
+  "category": "Category name (optional)",
+  "tags": ["tag1", "tag2"] (optional)
+}
+```
+
+#### Response (201 Created)
+```json
+{
+  "success": true,
+  "data": {
+    "id": "task-uuid",
+    "title": "Task title",
+    "description": "Task description (optional)",
+    "completed": false,
+    "createdAt": "2025-12-13T10:00:00Z",
+    "updatedAt": "2025-12-13T10:00:00Z",
+    "dueDate": "2025-12-31T23:59:59Z (if provided)",
+    "category": "Category name (if provided)",
+    "tags": ["tag1", "tag2"] (if provided)
+  },
+  "timestamp": "2025-12-13T10:00:00Z"
+}
+```
+
+### Get All Tasks
+```
+GET /tasks?completed={true|false}&category={category}&tag={tag}&sort={field}&order={asc|desc}
+```
+
+#### Query Parameters
+- `completed` (optional): Filter by completion status
+- `category` (optional): Filter by category
+- `tag` (optional): Filter by tag
+- `sort` (optional): Sort field (title, createdAt, updatedAt, dueDate)
+- `order` (optional): Sort order (asc, desc) - default: asc
+
+#### Response (200 OK)
+```json
+{
+  "success": true,
+  "data": {
+    "tasks": [
+      {
+        "id": "task-uuid",
+        "title": "Task title",
+        "description": "Task description (optional)",
+        "completed": false,
+        "createdAt": "2025-12-13T10:00:00Z",
+        "updatedAt": "2025-12-13T10:00:00Z",
+        "dueDate": "2025-12-31T23:59:59Z (if provided)",
+        "category": "Category name (if provided)",
+        "tags": ["tag1", "tag2"] (if provided)
+      }
+    ],
+    "total": 25
+  },
+  "timestamp": "2025-12-13T10:00:00Z"
+}
+```
+
+### Get Single Task
+```
+GET /tasks/{id}
+```
+
+#### Response (200 OK)
+```json
+{
+  "success": true,
+  "data": {
+    "id": "task-uuid",
+    "title": "Task title",
+    "description": "Task description (optional)",
+    "completed": false,
+    "createdAt": "2025-12-13T10:00:00Z",
+    "updatedAt": "2025-12-13T10:00:00Z",
+    "dueDate": "2025-12-31T23:59:59Z (if provided)",
+    "category": "Category name (if provided)",
+    "tags": ["tag1", "tag2"] (if provided)
+  },
+  "timestamp": "2025-12-13T10:00:00Z"
+}
+```
+
+### Update Task
+```
+PUT /tasks/{id}
+```
+
+#### Request
+```json
+{
+  "title": "Updated task title",
+  "description": "Updated task description",
+  "dueDate": "2025-12-31T23:59:59Z (optional)",
+  "category": "Updated category (optional)",
+  "tags": ["updatedTag1", "updatedTag2"] (optional)
+}
+```
+
+#### Response (200 OK)
+```json
+{
+  "success": true,
+  "data": {
+    "id": "task-uuid",
+    "title": "Updated task title",
+    "description": "Updated task description",
+    "completed": false,
+    "createdAt": "2025-12-13T10:00:00Z",
+    "updatedAt": "2025-12-13T10:01:00Z",
+    "dueDate": "2025-12-31T23:59:59Z (if provided)",
+    "category": "Updated category (if provided)",
+    "tags": ["updatedTag1", "updatedTag2"] (if provided)
+  },
+  "timestamp": "2025-12-13T10:01:00Z"
+}
+```
+
+### Toggle Task Completion
+```
+PATCH /tasks/{id}/complete
+```
+
+#### Request
+```json
+{
+  "completed": true
+}
+```
+
+#### Response (200 OK)
+```json
+{
+  "success": true,
+  "data": {
+    "id": "task-uuid",
+    "completed": true,
+    "updatedAt": "2025-12-13T10:01:00Z"
+  },
+  "timestamp": "2025-12-13T10:01:00Z"
+}
+```
+
+### Delete Task
+```
+DELETE /tasks/{id}
+```
+
+#### Response (200 OK)
+```json
+{
+  "success": true,
+  "data": {
+    "id": "task-uuid",
+    "deleted": true
+  },
+  "timestamp": "2025-12-13T10:01:00Z"
+}
+```
+
+### Export Tasks
+```
+GET /tasks/export?format={json|csv}
+```
+
+#### Query Parameters
+- `format`: Export format (json or csv), default: json
+
+#### Response (200 OK)
+For JSON format:
+```json
+{
+  "success": true,
+  "data": {
+    "format": "json",
+    "content": [
+      {
+        "id": "task-uuid",
+        "title": "Task title",
+        "description": "Task description",
+        "completed": false,
+        "createdAt": "2025-12-13T10:00:00Z",
+        "updatedAt": "2025-12-13T10:00:00Z",
+        "dueDate": "2025-12-31T23:59:59Z",
+        "category": "Category name",
+        "tags": ["tag1", "tag2"]
+      }
+    ]
+  },
+  "timestamp": "2025-12-13T10:01:00Z"
+}
+```
+
+For CSV format:
+```
+id,title,description,completed,createdAt,updatedAt,dueDate,category,tags
+task-uuid,"Task title","Task description",false,"2025-12-13T10:00:00Z","2025-12-13T10:00:00Z","2025-12-31T23:59:59Z","Category name","tag1,tag2"
+```
