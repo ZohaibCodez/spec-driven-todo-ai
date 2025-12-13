@@ -24,6 +24,16 @@ Acceptance Criteria:
 - Tasks are filtered by user_id
 - Proper foreign key constraints"
 
+## Clarifications
+
+### Session 2025-12-14
+
+- Q: For the User entity, how should email uniqueness be enforced? → A: Email must be unique across all users (standard practice for user identity)
+- Q: When a user attempts to access tasks for a user ID that doesn't exist, what should be the API response? → A: Return 404 Not Found (resource doesn't exist)
+- Q: Can tasks be transferred from one user to another user? → A: No, tasks cannot be transferred between users once created
+- Q: When a user account is deleted, what should happen to their tasks? → A: Delete all tasks associated with that user (data consistency)
+- Q: What should be the primary method for identifying users in API calls and internal references? → A: Use numeric ID (standard database primary key approach)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Create User Account (Priority: P1)
@@ -60,15 +70,15 @@ A user needs to create, view, update, and delete tasks that belong only to them,
 
 ### User Story 3 - Access Tasks via User-Specific Endpoints (Priority: P2)
 
-An API consumer needs to access tasks through endpoints that require a user identifier in the URL path, so that proper scoping and future authentication can be implemented.
+An API consumer needs to access tasks through endpoints that require a numeric user identifier in the URL path, so that proper scoping and future authentication can be implemented.
 
 **Why this priority**: This provides the correct API structure for user-scoped access, enabling proper isolation and preparing for future authentication implementation.
 
-**Independent Test**: Can be fully tested by making API calls to user-specific endpoints and verifying that the user ID in the path determines which tasks are accessed, delivering structured API access patterns.
+**Independent Test**: Can be fully tested by making API calls to user-specific endpoints and verifying that the numeric user ID in the path determines which tasks are accessed, delivering structured API access patterns.
 
 **Acceptance Scenarios**:
 
-1. **Given** an API consumer accesses tasks with a user ID in the path, **When** they call GET /api/{user_id}/tasks, **Then** only tasks belonging to that user ID are returned
+1. **Given** an API consumer accesses tasks with a numeric user ID in the path, **When** they call GET /api/{user_id}/tasks, **Then** only tasks belonging to that user ID are returned
 2. **Given** an API consumer wants to access a specific task for a user, **When** they call GET /api/{user_id}/tasks/{task_id}, **Then** only returns the task if it belongs to the specified user ID
 
 ---
@@ -85,6 +95,7 @@ An API consumer needs to access tasks through endpoints that require a user iden
 ### Functional Requirements
 
 - **FR-001**: System MUST provide a User entity with unique identifier, email address, name, and creation timestamp
+- **FR-001a**: System MUST enforce email uniqueness across all users to prevent duplicate registrations
 - **FR-002**: System MUST provide a Task entity that includes a foreign key relationship to a User
 - **FR-003**: System MUST ensure that all task operations (create, read, update, delete) are scoped to a specific user
 - **FR-004**: System MUST provide API endpoints that require user_id as a path parameter for all task operations
@@ -92,10 +103,13 @@ An API consumer needs to access tasks through endpoints that require a user iden
 - **FR-006**: System MUST enforce proper foreign key constraints between users and tasks at the database level
 - **FR-007**: System MUST validate that user_id exists in the database when creating tasks associated with that user
 - **FR-008**: System MUST provide consistent error responses when users attempt to access resources they don't own
+- **FR-009**: System MUST return 404 Not Found when attempting to access tasks for a non-existent user ID
+- **FR-010**: System MUST ensure tasks cannot be transferred between users once created
+- **FR-011**: System MUST delete all tasks associated with a user when that user account is deleted
 
 ### Key Entities *(include if feature involves data)*
 
-- **User**: Represents a person using the system, containing unique identifier, email address, name, and creation timestamp
+- **User**: Represents a person using the system, containing numeric unique identifier (primary key), email address (unique across all users), name, and creation timestamp
 - **Task**: Represents a to-do item that belongs to a specific user, maintaining the existing task properties (title, description, completion status) plus a foreign key reference to a User
 
 ## Success Criteria *(mandatory)*
