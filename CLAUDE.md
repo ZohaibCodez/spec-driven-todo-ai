@@ -287,6 +287,8 @@ This comprehensive setup enables the evolution from a simple console app to a so
 - Neon Serverless PostgreSQL (001-backend-api)
 - TypeScript 5.0+, Next.js 16 with App Router + Next.js 16, React 19, Tailwind CSS 3.4, React Hook Form, Fetch API (001-todo-ui)
 - Browser localStorage for anonymous session management, backend API for task persistence (001-todo-ui)
+- Python 3.12, TypeScript 5.0+ + FastAPI, SQLModel, Pydantic, Neon Serverless PostgreSQL (001-user-scoped-tasks)
+- Neon Serverless PostgreSQL database with proper foreign key constraints (001-user-scoped-tasks)
 
 ## Recent Changes
 - 001-backend-api: Added Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary

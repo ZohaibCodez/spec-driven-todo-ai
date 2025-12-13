@@ -60,7 +60,8 @@
       "Bash(.specify/scripts/bash/create-new-feature.sh --json \"Create specification for \"\"Add User Model and User-Scoped Tasks\"\":\n\nUser Stories:\n1. As a developer, I need a User model in the database\n2. As a developer, I need tasks to be associated with users\n3. As an API consumer, I need user_id in all task endpoints\n\nRequirements:\n- Add User model with id, email, name, created_at\n- Modify Task model to include user_id foreign key\n- Update all API endpoints to include user_id in the URL path\n- Endpoints should be: /api/{user_id}/tasks, /api/{user_id}/tasks/{id}, etc.\n- For now, user_id is just passed in the URL (no auth yet)\n\nAcceptance Criteria:\n- User table exists in database\n- Task table has user_id column\n- All endpoints require user_id in path\n- Tasks are filtered by user_id\n- Proper foreign key constraints\" --number 1 --short-name \"user-scoped-tasks\")",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-spec\" --stage spec --feature \"user-scoped-tasks\" --json)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-spec\" --stage spec --feature \"001-user-scoped-tasks\" --json)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-clarify\" --stage spec --feature \"001-user-scoped-tasks\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-clarify\" --stage spec --feature \"001-user-scoped-tasks\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-plan\" --stage plan --feature \"001-user-scoped-tasks\" --json)"
     ]
   }
 }
