@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.specify/scripts/bash/setup-plan.sh --json)",
+      "Bash(dos2unix .specify/scripts/bash/setup-plan.sh)",
+      "Bash(find .specify/scripts/bash -type f -name \"*.sh\" -exec sed -i 's/\\r$//' {} ;)",
+      "Bash(.specify/scripts/bash/update-agent-context.sh claude)"
+    ]
+  }
+}
