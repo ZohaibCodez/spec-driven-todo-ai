@@ -1,5 +1,7 @@
 # 🚀 Hackathon II Todo Application - CLAUDE.md
 
+@AGENTS.md
+
 ## 📋 Overview
 
 Welcome to the **Hackathon II Todo Application** - a progressive, spec-driven project that evolves through 5 phases from a simple Python console app to a full cloud-native deployment with AI capabilities.
