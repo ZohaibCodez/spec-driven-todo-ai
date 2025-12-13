@@ -289,6 +289,7 @@ This comprehensive setup enables the evolution from a simple console app to a so
 - Browser localStorage for anonymous session management, backend API for task persistence (001-todo-ui)
 - Python 3.12, TypeScript 5.0+ + FastAPI, SQLModel, Pydantic, Neon Serverless PostgreSQL (001-user-scoped-tasks)
 - Neon Serverless PostgreSQL database with proper foreign key constraints (001-user-scoped-tasks)
+- Python 3.12, TypeScript 5.0+ + FastAPI, SQLModel, Better Auth, python-jose, bcrypt, Next.js 15 with App Router (002-auth-system)
 
 ## Recent Changes
 - 001-backend-api: Added Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary
