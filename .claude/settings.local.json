@@ -42,7 +42,21 @@
       "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-clarify\" --stage spec --feature \"001-todo-ui\" --json)",
       "SlashCommand(/sp.plan)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-plan\" --stage plan --feature \"001-todo-ui\" --json)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-tasks\" --stage tasks --feature \"001-todo-ui\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-tasks\" --stage tasks --feature \"001-todo-ui\" --json)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-pnpm)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --yes)",
+      "Bash(cat /tmp/claude/tasks/b4dea71.output)",
+      "Bash(npm install next-themes)",
+      "Bash(find /home/dev_zohaib/spec-driven-todo-ai/specs/001-todo-ui/checklists/ -name \"*.md\" -exec basename {} ;)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Todo UI Implementation Complete\" --stage general --json)",
+      "Bash(npm install)",
+      "Bash(npm install clsx lucide-react tailwind-merge)",
+      "Bash(npm install clsx lucide-react tailwind-merge --save)",
+      "Bash(npm run dev)",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(fuser -k 3000/tcp)"
     ]
   }
 }
