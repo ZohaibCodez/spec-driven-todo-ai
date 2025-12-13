@@ -99,7 +99,10 @@
       "Bash(curl -s -X POST \"http://localhost:8000/api/6/tasks\" -H \"Content-Type: application/json\" -d '{\"\"title\"\": \"\"Final Test Task\"\", \"\"description\"\": \"\"Testing complete workflow\"\", \"\"user_id\"\": 6}')",
       "Bash(curl -s -X GET \"http://localhost:8000/api/6/tasks\")",
       "Bash(curl -s -X GET \"http://localhost:8000/api/999/tasks/999\")",
-      "Bash(curl -s -X POST \"http://localhost:8000/api/users\" -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"finaltest@example.com\"\", \"\"name\"\": \"\"Duplicate User\"\"}')"
+      "Bash(curl -s -X POST \"http://localhost:8000/api/users\" -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"finaltest@example.com\"\", \"\"name\"\": \"\"Duplicate User\"\"}')",
+      "Bash(sort -t- -k1,1n)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-system-spec\" --stage \"spec\" --feature \"auth-system\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-system-spec\" --stage \"spec\" --feature \"002-auth-system\" --json)"
     ]
   }
 }
