@@ -337,3 +337,10 @@ kubectl exec -it <pod-name> -- /bin/bash
 - **Versioning**: Use semantic versioning across all phases
 
 This comprehensive setup enables the evolution from a simple console app to a sophisticated, cloud-native AI-powered application while maintaining spec-driven development principles throughout the journey.
+
+## Active Technologies
+- Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary (001-backend-api)
+- Neon Serverless PostgreSQL (001-backend-api)
+
+## Recent Changes
+- 001-backend-api: Added Python 3.12 + FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary

@@ -22,7 +22,10 @@
       "Bash(.specify/scripts/bash/create-new-feature.sh --json \"Create a specification for \"\"Backend API Foundation - Basic CRUD\"\":\n\nUser Stories:\n1. As a developer, I need a FastAPI server that can handle HTTP requests\n2. As a developer, I need SQLModel models for Task entities\n3. As a developer, I need database connection to Neon PostgreSQL\n4. As a developer, I need REST API endpoints for basic CRUD operations\n\nRequirements:\n- Set up FastAPI project in /backend folder\n- Create Task model with fields: id, title, description, completed, created_at, updated_at\n- Create database connection using SQLModel and Neon PostgreSQL connection string\n- Implement these endpoints (without auth for now):\n  * GET /api/tasks - List all tasks\n  * POST /api/tasks - Create a task\n  * GET /api/tasks/{id} - Get single task\n  * PUT /api/tasks/{id} - Update a task\n  * DELETE /api/tasks/{id} - Delete a task\n  * PATCH /api/tasks/{id}/complete - Toggle completion\n\nAcceptance Criteria:\n- FastAPI server runs on port 8000\n- All endpoints return proper JSON responses\n- Database operations use SQLModel ORM\n- Proper error handling with HTTP status codes\n- CORS enabled for frontend communication\" --number 1 --short-name \"backend-api\")",
       "Bash(chmod +x .specify/scripts/bash/create-new-feature.sh)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-spec\" --stage spec --feature \"001-backend-api\" --json)",
-      "Bash(chmod +x .specify/scripts/bash/create-phr.sh)"
+      "Bash(chmod +x .specify/scripts/bash/create-phr.sh)",
+      "Bash(chmod +x .specify/scripts/bash/setup-plan.sh)",
+      "Bash(chmod +x .specify/scripts/bash/update-agent-context.sh)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-plan\" --stage plan --feature \"001-backend-api\" --json)"
     ]
   }
 }
