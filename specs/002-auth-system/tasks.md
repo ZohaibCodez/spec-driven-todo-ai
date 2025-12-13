@@ -31,12 +31,12 @@ Build the authentication system incrementally with a focus on the foundational c
 ### Goal
 Initialize project structure and install required dependencies for both frontend and backend.
 
-- [ ] T001 Create backend directory structure per implementation plan
-- [ ] T002 Create frontend directory structure per implementation plan
-- [ ] T003 [P] Create backend/requirements.txt with FastAPI, SQLModel, python-jose, bcrypt, slowapi, python-dotenv
-- [ ] T004 [P] Create frontend/package.json with Next.js 15, React, TypeScript dependencies
-- [ ] T005 Create backend/.env template with required environment variables
-- [ ] T006 Create frontend/.env.local template with required environment variables
+- [X] T001 Create backend directory structure per implementation plan
+- [X] T002 Create frontend directory structure per implementation plan
+- [X] T003 [P] Create backend/requirements.txt with FastAPI, SQLModel, python-jose, bcrypt, slowapi, python-dotenv
+- [X] T004 [P] Create frontend/package.json with Next.js 15, React, TypeScript dependencies
+- [X] T005 Create backend/.env template with required environment variables
+- [X] T006 Create frontend/.env.local template with required environment variables
 
 ---
 
@@ -45,16 +45,16 @@ Initialize project structure and install required dependencies for both frontend
 ### Goal
 Build core infrastructure components required by all user stories: user model, authentication utilities, and database setup.
 
-- [ ] T007 Create backend/models.py with User SQLModel including email, hashed password (bcrypt 12 rounds), name, timestamps, email_verified, is_active
-- [ ] T008 Create backend/database.py with database connection setup for Neon PostgreSQL
-- [ ] T009 Create backend/schemas.py with Pydantic models for SignupRequest, SigninRequest, AuthResponse
-- [ ] T010 Create backend/auth/security.py with password hashing utilities using bcrypt 12 rounds
-- [ ] T011 Create backend/auth/security.py with password validation (8 chars, uppercase, lowercase, number, special char)
-- [ ] T012 Create backend/auth/security.py with JWT token creation and validation utilities using python-jose
-- [ ] T013 Create backend/auth/middleware.py with JWT authentication middleware
-- [ ] T014 [P] Create backend/auth/routes.py with authentication rate limiting (5 attempts per IP per minute) using SlowAPI
-- [ ] T015 Create backend/main.py with proper CORS configuration for frontend integration
-- [ ] T016 Update backend/main.py to include authentication routes
+- [X] T007 Create backend/models.py with User SQLModel including email, hashed password (bcrypt 12 rounds), name, timestamps, email_verified, is_active
+- [X] T008 Create backend/database.py with database connection setup for Neon PostgreSQL
+- [X] T009 Create backend/schemas.py with Pydantic models for SignupRequest, SigninRequest, AuthResponse
+- [X] T010 Create backend/auth/security.py with password hashing utilities using bcrypt 12 rounds
+- [X] T011 Create backend/auth/security.py with password validation (8 chars, uppercase, lowercase, number, special char)
+- [X] T012 Create backend/auth/security.py with JWT token creation and validation utilities using python-jose
+- [X] T013 Create backend/auth/middleware.py with JWT authentication middleware
+- [X] T014 [P] Create backend/auth/routes.py with authentication rate limiting (5 attempts per IP per minute) using SlowAPI
+- [X] T015 Create backend/main.py with proper CORS configuration for frontend integration
+- [X] T016 Update backend/main.py to include authentication routes
 
 ---
 
@@ -68,17 +68,17 @@ Can be fully tested by having a new user complete the signup flow, verify they c
 
 ### Tasks
 
-- [ ] T017 [P] [US1] Create backend/auth/routes.py with POST /auth/signup endpoint implementing user registration with email validation and password complexity requirements
-- [ ] T018 [P] [US1] Create backend/auth/routes.py with POST /auth/signin endpoint implementing user authentication with email and password verification
-- [ ] T019 [P] [US1] Create backend/auth/routes.py with JWT token generation on successful signup/signin with 7-day expiration
-- [ ] T020 [US1] Create frontend/src/components/auth/SignupForm.tsx with email input, password input, confirm password field, and validation
-- [ ] T021 [US1] Create frontend/src/components/auth/SigninForm.tsx with email and password inputs and validation
-- [ ] T022 [US1] Create frontend/src/app/signup/page.tsx with signup form integration
-- [ ] T023 [US1] Create frontend/src/app/signin/page.tsx with signin form integration
-- [ ] T024 [US1] Create frontend/src/lib/api.ts with authentication API client functions
-- [ ] T025 [US1] Create frontend/src/context/AuthContext.tsx with authentication state management
-- [ ] T026 [US1] Implement redirect to main application after successful signup/signin
-- [ ] T027 [US1] Implement session persistence across page refreshes using HTTP-only cookies
+- [X] T017 [P] [US1] Create backend/auth/routes.py with POST /auth/signup endpoint implementing user registration with email validation and password complexity requirements
+- [X] T018 [P] [US1] Create backend/auth/routes.py with POST /auth/signin endpoint implementing user authentication with email and password verification
+- [X] T019 [P] [US1] Create backend/auth/routes.py with JWT token generation on successful signup/signin with 7-day expiration
+- [X] T020 [US1] Create frontend/src/components/auth/SignupForm.tsx with email input, password input, confirm password field, and validation
+- [X] T021 [US1] Create frontend/src/components/auth/SigninForm.tsx with email and password inputs and validation
+- [X] T022 [US1] Create frontend/src/app/signup/page.tsx with signup form integration
+- [X] T023 [US1] Create frontend/src/app/signin/page.tsx with signin form integration
+- [X] T024 [US1] Create frontend/src/lib/api.ts with authentication API client functions
+- [X] T025 [US1] Create frontend/src/context/AuthContext.tsx with authentication state management
+- [X] T026 [US1] Implement redirect to main application after successful signup/signin
+- [X] T027 [US1] Implement session persistence across page refreshes using HTTP-only cookies
 
 ---
 
@@ -92,13 +92,13 @@ Can be fully tested by making API requests with valid and invalid tokens to veri
 
 ### Tasks
 
-- [ ] T028 [P] [US2] Update backend/auth/middleware.py with JWT token validation on protected endpoints
-- [ ] T029 [US2] Update backend/auth/middleware.py to extract user identity from JWT token claims (sub, email)
-- [ ] T030 [US2] Update backend/auth/middleware.py to reject requests with invalid, expired, or malformed JWT tokens
-- [ ] T031 [US2] Update backend/routes/tasks.py to validate user_id in token matches requested resource for user isolation
-- [ ] T032 [US2] Create backend/auth/middleware.py with 401/403 error responses for authentication failures
-- [ ] T033 [US2] Update frontend/src/lib/api.ts to include JWT token in Authorization header for all API requests
-- [ ] T034 [US2] Create frontend/src/components/auth/UserMenu.tsx to display authenticated user information in application header
+- [X] T028 [P] [US2] Update backend/auth/middleware.py with JWT token validation on protected endpoints
+- [X] T029 [US2] Update backend/auth/middleware.py to extract user identity from JWT token claims (sub, email)
+- [X] T030 [US2] Update backend/auth/middleware.py to reject requests with invalid, expired, or malformed JWT tokens
+- [X] T031 [US2] Update backend/routes/tasks.py to validate user_id in token matches requested resource for user isolation
+- [X] T032 [US2] Create backend/auth/middleware.py with 401/403 error responses for authentication failures
+- [X] T033 [US2] Update frontend/src/lib/api.ts to include JWT token in Authorization header for all API requests
+- [X] T034 [US2] Create frontend/src/components/auth/UserMenu.tsx to display authenticated user information in application header
 
 ---
 
@@ -112,12 +112,12 @@ Can be fully tested by logging in, verifying the session persists, logging out, 
 
 ### Tasks
 
-- [ ] T035 [P] [US3] Create backend/auth/routes.py with POST /auth/logout endpoint to clear session and invalidate token
-- [ ] T036 [US3] Update backend/auth/routes.py with POST /auth/refresh endpoint for token refresh capability
-- [ ] T037 [US3] Create frontend/src/components/auth/UserMenu.tsx with logout button functionality
-- [ ] T038 [US3] Implement redirect to sign-in page after successful logout
-- [ ] T039 [US3] Ensure subsequent API requests fail with 401 after logout
-- [ ] T040 [US3] Implement token expiration handling with redirect to sign-in page
+- [X] T035 [P] [US3] Create backend/auth/routes.py with POST /auth/logout endpoint to clear session and invalidate token
+- [X] T036 [US3] Update backend/auth/routes.py with POST /auth/refresh endpoint for token refresh capability
+- [X] T037 [US3] Create frontend/src/components/auth/UserMenu.tsx with logout button functionality
+- [X] T038 [US3] Implement redirect to sign-in page after successful logout
+- [X] T039 [US3] Ensure subsequent API requests fail with 401 after logout
+- [X] T040 [US3] Implement token expiration handling with redirect to sign-in page
 
 ---
 
@@ -128,19 +128,19 @@ Add finishing touches, logging, error handling, and ensure all requirements are 
 
 ### Tasks
 
-- [ ] T041 [P] Add authentication event logging (success/failure) with PII security considerations to backend/auth/routes.py
-- [ ] T042 [P] Add comprehensive error handling with clear user-friendly messages throughout authentication flow
-- [ ] T043 [P] Add password strength indicator to frontend/src/components/auth/SignupForm.tsx
-- [ ] T044 [P] Add loading states to all authentication forms for better UX
-- [ ] T045 [P] Add proper input validation and error display in all forms
+- [X] T041 [P] Add authentication event logging (success/failure) with PII security considerations to backend/auth/routes.py
+- [X] T042 [P] Add comprehensive error handling with clear user-friendly messages throughout authentication flow
+- [X] T043 [P] Add password strength indicator to frontend/src/components/auth/SignupForm.tsx
+- [X] T044 [P] Add loading states to all authentication forms for better UX
+- [X] T045 [P] Add proper input validation and error display in all forms
 - [ ] T046 [P] Add token expiration handling with appropriate user notifications
 - [ ] T047 [P] Add edge case handling for JWT token expiration during active use
-- [ ] T048 [P] Add handling for malformed Authorization headers with appropriate error responses
+- [X] T048 [P] Add handling for malformed Authorization headers with appropriate error responses
 - [ ] T049 [P] Add user account verification functionality (email_verified field)
-- [ ] T050 [P] Add proper TypeScript types for all authentication-related interfaces
-- [ ] T051 [P] Add comprehensive API documentation for all authentication endpoints
+- [X] T050 [P] Add proper TypeScript types for all authentication-related interfaces
+- [X] T051 [P] Add comprehensive API documentation for all authentication endpoints
 - [ ] T052 [P] Add security headers and proper cookie settings for JWT storage
-- [ ] T053 [P] Add comprehensive error logging for debugging purposes
+- [X] T053 [P] Add comprehensive error logging for debugging purposes
 - [ ] T054 [P] Add proper cleanup of resources and connections
 - [ ] T055 [P] Add performance optimizations for authentication requests
 - [ ] T056 [P] Add proper testing setup and initial test cases

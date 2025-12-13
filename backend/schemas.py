@@ -4,15 +4,18 @@ from datetime import datetime
 
 class UserBase(BaseModel):
     email: str
-    name: str
+    name: Optional[str] = None
 
 class UserCreate(UserBase):
     email: str
-    name: str
+    name: Optional[str] = None
 
 class UserResponse(UserBase):
     id: int
     created_at: datetime
+    updated_at: datetime
+    email_verified: bool
+    is_active: bool
 
 class TaskCreate(BaseModel):
     title: str
@@ -33,3 +36,23 @@ class TaskResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     user_id: int
+
+class SignupRequest(BaseModel):
+    email: str
+    password: str  # Must meet complexity requirements (minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character)
+    confirm_password: str
+
+class SigninRequest(BaseModel):
+    email: str
+    password: str
+
+class AuthResponse(BaseModel):
+    user: UserResponse
+    access_token: str
+    token_type: str
+    expires_in: int
+
+class ErrorResponse(BaseModel):
+    error: str
+    message: str
+    details: Optional[dict] = None

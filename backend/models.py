@@ -8,8 +8,12 @@ class User(SQLModel, table=True):
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     email: str = Field(unique=True, min_length=1, max_length=255)  # Email must be unique
-    name: str = Field(min_length=1, max_length=255)
+    password: str  # Hashed password using bcrypt with 12 rounds
+    name: Optional[str] = Field(default=None, min_length=1, max_length=255)
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    email_verified: bool = Field(default=False)
+    is_active: bool = Field(default=True)
 
     # Relationship to tasks with cascade delete
     tasks: list["Task"] = Relationship(back_populates="user", cascade_delete=True)

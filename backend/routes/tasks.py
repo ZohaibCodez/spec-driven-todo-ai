@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import Session
 from typing import List
 from datetime import datetime
@@ -6,6 +6,7 @@ from database import get_session
 from models import Task
 import schemas
 from services.task_service import TaskService
+from auth.middleware import require_valid_token, validate_user_owns_resource
 
 router = APIRouter()
 
@@ -181,10 +182,20 @@ def toggle_task_completion(task_id: int, session: Session = Depends(get_session)
 
 # New user-scoped endpoints (User Story 3)
 @router.get("/{user_id}/tasks", response_model=List[schemas.TaskResponse])
-def get_user_tasks(user_id: int, session: Session = Depends(get_session)):
+def get_user_tasks(user_id: int, request: Request, session: Session = Depends(get_session)):
     """
     Get all tasks for a specific user.
     """
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Validate that the user_id in the token matches the requested user_id
+    if token_data.user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to access this resource"
+        )
+
     # Get tasks for the specified user
     tasks = TaskService.get_tasks_for_user(user_id, session)
 
@@ -205,13 +216,16 @@ def get_user_tasks(user_id: int, session: Session = Depends(get_session)):
     return responses
 
 @router.post("/{user_id}/tasks", response_model=schemas.TaskResponse, status_code=201)
-def create_user_task(user_id: int, task_data: schemas.TaskCreate, session: Session = Depends(get_session)):
+def create_user_task(user_id: int, task_data: schemas.TaskCreate, request: Request, session: Session = Depends(get_session)):
     """
     Create a new task for a specific user.
     """
-    # Verify the user_id in the path matches the one in the request body
-    if task_data.user_id != user_id:
-        raise HTTPException(status_code=400, detail="User ID in path does not match user ID in request body")
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Verify the user_id in the path matches the one in the request body and token
+    if task_data.user_id != user_id or token_data.user_id != user_id:
+        raise HTTPException(status_code=403, detail="You don't have permission to create tasks for this user")
 
     # Create task for user using the service
     task = TaskService.create_task_for_user(task_data, session)
@@ -230,10 +244,20 @@ def create_user_task(user_id: int, task_data: schemas.TaskCreate, session: Sessi
     return response
 
 @router.get("/{user_id}/tasks/{task_id}", response_model=schemas.TaskResponse)
-def get_user_task(user_id: int, task_id: int, session: Session = Depends(get_session)):
+def get_user_task(user_id: int, task_id: int, request: Request, session: Session = Depends(get_session)):
     """
     Get a specific task for a specific user.
     """
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Validate that the user_id in the token matches the requested user_id
+    if token_data.user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to access this resource"
+        )
+
     # Get the specific task for the user
     task = TaskService.get_task_for_user(task_id, user_id, session)
 
@@ -254,10 +278,20 @@ def get_user_task(user_id: int, task_id: int, session: Session = Depends(get_ses
     return response
 
 @router.put("/{user_id}/tasks/{task_id}", response_model=schemas.TaskResponse)
-def update_user_task(user_id: int, task_id: int, task_data: schemas.TaskUpdate, session: Session = Depends(get_session)):
+def update_user_task(user_id: int, task_id: int, task_data: schemas.TaskUpdate, request: Request, session: Session = Depends(get_session)):
     """
     Update a specific task for a specific user.
     """
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Validate that the user_id in the token matches the requested user_id
+    if token_data.user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to access this resource"
+        )
+
     # Update the task for the user
     updated_task = TaskService.update_task_for_user(task_id, user_id, task_data, session)
 
@@ -278,10 +312,20 @@ def update_user_task(user_id: int, task_id: int, task_data: schemas.TaskUpdate, 
     return response
 
 @router.delete("/{user_id}/tasks/{task_id}", status_code=204)
-def delete_user_task(user_id: int, task_id: int, session: Session = Depends(get_session)):
+def delete_user_task(user_id: int, task_id: int, request: Request, session: Session = Depends(get_session)):
     """
     Delete a specific task for a specific user.
     """
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Validate that the user_id in the token matches the requested user_id
+    if token_data.user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to access this resource"
+        )
+
     # Delete the task for the user
     deleted = TaskService.delete_task_for_user(task_id, user_id, session)
 
@@ -292,10 +336,20 @@ def delete_user_task(user_id: int, task_id: int, session: Session = Depends(get_
     return
 
 @router.patch("/{user_id}/tasks/{task_id}/complete", response_model=schemas.TaskResponse)
-def toggle_user_task_completion(user_id: int, task_id: int, session: Session = Depends(get_session)):
+def toggle_user_task_completion(user_id: int, task_id: int, request: Request, session: Session = Depends(get_session)):
     """
     Toggle completion status of a specific task for a specific user.
     """
+    # Validate that the user is authenticated
+    token_data = require_valid_token(request)
+
+    # Validate that the user_id in the token matches the requested user_id
+    if token_data.user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to access this resource"
+        )
+
     # Toggle the completion status for the user's task
     updated_task = TaskService.toggle_task_completion_for_user(task_id, user_id, session)
 
