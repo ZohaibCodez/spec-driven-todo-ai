@@ -1,217 +1,337 @@
-# Claude Code Rules
+# 🚀 Hackathon II Todo Application - CLAUDE.md
 
-This file is generated during init for the selected agent.
+## 📋 Overview
 
-You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the architext to build products.
+Welcome to the **Hackathon II Todo Application** - a progressive, spec-driven project that evolves through 5 phases from a simple Python console app to a full cloud-native deployment with AI capabilities.
 
-## Task context
+### 🎯 Project Vision
+A comprehensive todo application that demonstrates modern development practices, from basic CLI functionality to AI-powered workflows and cloud-native deployment patterns.
 
-**Your Surface:** You operate on a project level, providing guidance to users and executing development tasks via a defined set of tools.
+### 📊 Phase Evolution
+- **Phase I** 📟: Python console app (in-memory storage)
+- **Phase II** 🌐: Full-stack web app (Next.js + FastAPI + Neon DB)
+- **Phase III** 🤖: AI chatbot (OpenAI Agents + MCP)
+- **Phase IV** ☸️: Local Kubernetes (Minikube + Helm)
+- **Phase V** ☁️: Cloud deployment (DigitalOcean/GKE + Kafka + Dapr)
 
-**Your Success is Measured By:**
-- All outputs strictly follow the user intent.
-- Prompt History Records (PHRs) are created automatically and accurately for every user prompt.
-- Architectural Decision Record (ADR) suggestions are made intelligently for significant decisions.
-- All changes are small, testable, and reference code precisely.
+### 🎯 Spec-Driven Development Approach
+This project uses **spec-driven development** methodology with:
+- 📄 **AGENTS.md** for agent specifications
+- 🛠️ **Spec-KitPlus** for structured development
+- 🤖 **Claude Code** for AI-assisted implementation
 
-## Core Guarantees (Product Promise)
+---
 
-- Record every user input verbatim in a Prompt History Record (PHR) after every user message. Do not truncate; preserve full multiline input.
-- PHR routing (all under `history/prompts/`):
-  - Constitution → `history/prompts/constitution/`
-  - Feature-specific → `history/prompts/<feature-name>/`
-  - General → `history/prompts/general/`
-- ADR suggestions: when an architecturally significant decision is detected, suggest: "📋 Architectural decision detected: <brief>. Document? Run `/sp.adr <title>`." Never auto‑create ADRs; require user consent.
+## 🛠️ Tech Stack
 
-## Development Guidelines
+### Phase I - Console App
+- **Language**: Python 3.12+
+- **Architecture**: Three-layer (Models, Storage, CLI)
+- **Storage**: In-memory dictionary
+- **Dependencies**: Standard library only
 
-### 1. Authoritative Source Mandate:
-Agents MUST prioritize and use MCP tools and CLI commands for all information gathering and task execution. NEVER assume a solution from internal knowledge; all methods require external verification.
+### Phase II - Full-Stack Web
+- **Frontend**: Next.js 14+ (App Router)
+- **Backend**: FastAPI 0.104+
+- **Database**: Neon PostgreSQL
+- **Auth**: Better Auth (JWT)
+- **Deployment**: Vercel (frontend), Railway/Deta (backend)
 
-### 2. Execution Flow:
-Treat MCP servers as first-class tools for discovery, verification, execution, and state capture. PREFER CLI interactions (running commands and capturing outputs) over manual file creation or reliance on internal knowledge.
+### Phase III - AI Integration
+- **AI Framework**: OpenAI Agents
+- **MCP**: Model Context Protocol
+- **API Gateway**: FastAPI with async endpoints
 
-### 3. Knowledge capture (PHR) for Every User Input.
-After completing requests, you **MUST** create a PHR (Prompt History Record).
+### Phase IV - Container Orchestration
+- **Orchestration**: Kubernetes (Minikube)
+- **Packaging**: Helm charts
+- **Service Mesh**: Dapr (Distributed Application Runtime)
 
-**When to create PHRs:**
-- Implementation work (code changes, new features)
-- Planning/architecture discussions
-- Debugging sessions
-- Spec/task/plan creation
-- Multi-step workflows
+### Phase V - Cloud Production
+- **Platform**: DigitalOcean Kubernetes (DOKS) or Google GKE
+- **Messaging**: Apache Kafka
+- **Runtime**: Dapr for distributed services
+- **Monitoring**: Prometheus + Grafana
 
-**PHR Creation Process:**
+---
 
-1) Detect stage
-   - One of: constitution | spec | plan | tasks | red | green | refactor | explainer | misc | general
+## 📁 Project Structure
 
-2) Generate title
-   - 3–7 words; create a slug for the filename.
+```
+hackathon-todo/
+├── 📁 specs/                    # Spec-driven development artifacts
+│   ├── 📁 phase-i-console/     # Phase I specifications
+│   │   ├── spec.md            # Feature specification
+│   │   ├── plan.md            # Implementation plan
+│   │   ├── tasks.md           # Development tasks
+│   │   └── contracts/         # API contracts
+│   ├── 📁 phase-ii-web/       # Phase II specifications
+│   │   ├── spec.md
+│   │   ├── plan.md
+│   │   └── tasks.md
+│   ├── 📁 phase-iii-ai/       # Phase III specifications
+│   │   ├── spec.md
+│   │   ├── plan.md
+│   │   └── tasks.md
+│   ├── 📁 phase-iv-k8s/       # Phase IV specifications
+│   │   ├── spec.md
+│   │   ├── plan.md
+│   │   └── tasks.md
+│   └── 📁 phase-v-cloud/      # Phase V specifications
+│       ├── spec.md
+│       ├── plan.md
+│       └── tasks.md
+├── 📁 frontend/                # Next.js application (Phase II+)
+│   ├── src/
+│   ├── pages/
+│   ├── components/
+│   └── package.json
+├── 📁 backend/                 # FastAPI application (Phase II+)
+│   ├── src/
+│   ├── api/
+│   ├── models/
+│   ├── services/
+│   └── requirements.txt
+├── 📁 ai/                      # AI agents and MCP (Phase III+)
+│   ├── agents/
+│   ├── mcp/
+│   └── config/
+├── 📁 k8s/                    # Kubernetes manifests (Phase IV+)
+│   ├── helm/
+│   ├── manifests/
+│   └── kustomize/
+├── 📁 .specify/               # Spec-KitPlus configuration
+│   ├── memory/
+│   ├── scripts/
+│   └── templates/
+├── 📁 history/                # Prompt history records
+│   └── prompts/
+├── 📄 CLAUDE.md              # This file
+├── 📄 AGENTS.md              # Agent specifications
+├── 📄 pyproject.toml         # Python configuration
+├── 📄 package.json           # Frontend dependencies
+├── 📄 docker-compose.yml     # Local development
+└── 📄 README.md              # Project documentation
+```
 
-2a) Resolve route (all under history/prompts/)
-  - `constitution` → `history/prompts/constitution/`
-  - Feature stages (spec, plan, tasks, red, green, refactor, explainer, misc) → `history/prompts/<feature-name>/` (requires feature context)
-  - `general` → `history/prompts/general/`
+---
 
-3) Prefer agent‑native flow (no shell)
-   - Read the PHR template from one of:
-     - `.specify/templates/phr-template.prompt.md`
-     - `templates/phr-template.prompt.md`
-   - Allocate an ID (increment; on collision, increment again).
-   - Compute output path based on stage:
-     - Constitution → `history/prompts/constitution/<ID>-<slug>.constitution.prompt.md`
-     - Feature → `history/prompts/<feature-name>/<ID>-<slug>.<stage>.prompt.md`
-     - General → `history/prompts/general/<ID>-<slug>.general.prompt.md`
-   - Fill ALL placeholders in YAML and body:
-     - ID, TITLE, STAGE, DATE_ISO (YYYY‑MM‑DD), SURFACE="agent"
-     - MODEL (best known), FEATURE (or "none"), BRANCH, USER
-     - COMMAND (current command), LABELS (["topic1","topic2",...])
-     - LINKS: SPEC/TICKET/ADR/PR (URLs or "null")
-     - FILES_YAML: list created/modified files (one per line, " - ")
-     - TESTS_YAML: list tests run/added (one per line, " - ")
-     - PROMPT_TEXT: full user input (verbatim, not truncated)
-     - RESPONSE_TEXT: key assistant output (concise but representative)
-     - Any OUTCOME/EVALUATION fields required by the template
-   - Write the completed file with agent file tools (WriteFile/Edit).
-   - Confirm absolute path in output.
+## 📐 Development Conventions
 
-4) Use sp.phr command file if present
-   - If `.**/commands/sp.phr.*` exists, follow its structure.
-   - If it references shell but Shell is unavailable, still perform step 3 with agent‑native tools.
+### 🏗️ Architecture Principles
+1. **Separation of Concerns**: Clear boundaries between layers
+2. **Spec-First**: All features start with specifications
+3. **Test-Driven**: Write tests before implementation
+4. **Security-First**: Authentication and validation at every layer
 
-5) Shell fallback (only if step 3 is unavailable or fails, and Shell is permitted)
-   - Run: `.specify/scripts/bash/create-phr.sh --title "<title>" --stage <stage> [--feature <name>] --json`
-   - Then open/patch the created file to ensure all placeholders are filled and prompt/response are embedded.
+### 📝 Code Standards
+- **Python**: PEP 8 with type hints (mypy)
+- **JavaScript**: ESLint + Prettier
+- **Documentation**: Comprehensive docstrings
+- **Commits**: Conventional commits format
 
-6) Routing (automatic, all under history/prompts/)
-   - Constitution → `history/prompts/constitution/`
-   - Feature stages → `history/prompts/<feature-name>/` (auto-detected from branch or explicit feature context)
-   - General → `history/prompts/general/`
+### 🔐 Security Considerations
+- **JWT Authentication**: Better Auth for secure sessions
+- **Input Validation**: All user inputs validated at API boundary
+- **SQL Injection**: Parameterized queries with SQLAlchemy
+- **XSS Protection**: Sanitized outputs in web app
+- **Secrets Management**: Environment variables, never hardcoded
 
-7) Post‑creation validations (must pass)
-   - No unresolved placeholders (e.g., `{{THIS}}`, `[THAT]`).
-   - Title, stage, and dates match front‑matter.
-   - PROMPT_TEXT is complete (not truncated).
-   - File exists at the expected path and is readable.
-   - Path matches route.
+### 🏗️ Naming Conventions
+- **Python**: `snake_case` for functions, `PascalCase` for classes
+- **JavaScript**: `camelCase` for variables and functions
+- **Files**: Descriptive names with clear purpose
+- **Branches**: `feature/phase-ii-user-auth`, `bugfix/login-issue`
 
-8) Report
-   - Print: ID, path, stage, title.
-   - On any failure: warn but do not block the main command.
-   - Skip PHR only for `/sp.phr` itself.
+---
 
-### 4. Explicit ADR suggestions
-- When significant architectural decisions are made (typically during `/sp.plan` and sometimes `/sp.tasks`), run the three‑part test and suggest documenting with:
-  "📋 Architectural decision detected: <brief> — Document reasoning and tradeoffs? Run `/sp.adr <decision-title>`"
-- Wait for user consent; never auto‑create the ADR.
+## ⚡ Development Commands
 
-### 5. Human as Tool Strategy
-You are not expected to solve every problem autonomously. You MUST invoke the user for input when you encounter situations that require human judgment. Treat the user as a specialized tool for clarification and decision-making.
+### 🚀 Phase I - Console App
+```bash
+# Install dependencies
+uv sync
 
-**Invocation Triggers:**
-1.  **Ambiguous Requirements:** When user intent is unclear, ask 2-3 targeted clarifying questions before proceeding.
-2.  **Unforeseen Dependencies:** When discovering dependencies not mentioned in the spec, surface them and ask for prioritization.
-3.  **Architectural Uncertainty:** When multiple valid approaches exist with significant tradeoffs, present options and get user's preference.
-4.  **Completion Checkpoint:** After completing major milestones, summarize what was done and confirm next steps. 
+# Run the application
+python -m src.cli.main
 
-## Default policies (must follow)
-- Clarify and plan first - keep business understanding separate from technical plan and carefully architect and implement.
-- Do not invent APIs, data, or contracts; ask targeted clarifiers if missing.
-- Never hardcode secrets or tokens; use `.env` and docs.
-- Prefer the smallest viable diff; do not refactor unrelated code.
-- Cite existing code with code references (start:end:path); propose new code in fenced blocks.
-- Keep reasoning private; output only decisions, artifacts, and justifications.
+# Run tests
+PYTHONPATH=. python3 -m unittest discover tests/ -v
 
-### Execution contract for every request
-1) Confirm surface and success criteria (one sentence).
-2) List constraints, invariants, non‑goals.
-3) Produce the artifact with acceptance checks inlined (checkboxes or tests where applicable).
-4) Add follow‑ups and risks (max 3 bullets).
-5) Create PHR in appropriate subdirectory under `history/prompts/` (constitution, feature-name, or general).
-6) If plan/tasks identified decisions that meet significance, surface ADR suggestion text as described above.
+# Run performance tests
+PYTHONPATH=. python3 -c "
+import time
+from src.storage.task_storage import TaskStorage
+storage = TaskStorage()
+start_time = time.time()
+for i in range(1000): storage.add_task(f'Task {i}')
+print(f'1000 tasks in {time.time() - start_time:.4f}s')
+"
+```
 
-### Minimum acceptance criteria
-- Clear, testable acceptance criteria included
-- Explicit error paths and constraints stated
-- Smallest viable change; no unrelated edits
-- Code references to modified/inspected files where relevant
+### 🌐 Phase II - Full-Stack Web
+```bash
+# Backend (in backend/ directory)
+pip install -r requirements.txt
+uvicorn src.main:app --reload
 
-## Architect Guidelines (for planning)
+# Frontend (in frontend/ directory)
+npm install
+npm run dev
 
-Instructions: As an expert architect, generate a detailed architectural plan for [Project Name]. Address each of the following thoroughly.
+# Database setup
+neonctl projects create
+neonctl branches create --project-id=xxx
+```
 
-1. Scope and Dependencies:
-   - In Scope: boundaries and key features.
-   - Out of Scope: explicitly excluded items.
-   - External Dependencies: systems/services/teams and ownership.
+### 🤖 Phase III - AI Integration
+```bash
+# Set up OpenAI API
+export OPENAI_API_KEY=your_key_here
 
-2. Key Decisions and Rationale:
-   - Options Considered, Trade-offs, Rationale.
-   - Principles: measurable, reversible where possible, smallest viable change.
+# Run AI agent
+python -m ai.agents.todo_agent
 
-3. Interfaces and API Contracts:
-   - Public APIs: Inputs, Outputs, Errors.
-   - Versioning Strategy.
-   - Idempotency, Timeouts, Retries.
-   - Error Taxonomy with status codes.
+# Test MCP integration
+python -m ai.mcp.server --port 8000
+```
 
-4. Non-Functional Requirements (NFRs) and Budgets:
-   - Performance: p95 latency, throughput, resource caps.
-   - Reliability: SLOs, error budgets, degradation strategy.
-   - Security: AuthN/AuthZ, data handling, secrets, auditing.
-   - Cost: unit economics.
+### ☸️ Phase IV - Kubernetes
+```bash
+# Start Minikube
+minikube start
 
-5. Data Management and Migration:
-   - Source of Truth, Schema Evolution, Migration and Rollback, Data Retention.
+# Install Helm chart
+helm install todo-app ./k8s/helm/todo-app
 
-6. Operational Readiness:
-   - Observability: logs, metrics, traces.
-   - Alerting: thresholds and on-call owners.
-   - Runbooks for common tasks.
-   - Deployment and Rollback strategies.
-   - Feature Flags and compatibility.
+# Port forward
+kubectl port-forward svc/todo-app 8080:80
+```
 
-7. Risk Analysis and Mitigation:
-   - Top 3 Risks, blast radius, kill switches/guardrails.
+### ☁️ Phase V - Cloud Deployment
+```bash
+# Deploy to DigitalOcean
+doctl kubernetes cluster kubeconfig save your-cluster
+kubectl apply -f k8s/production/
 
-8. Evaluation and Validation:
-   - Definition of Done (tests, scans).
-   - Output Validation for format/requirements/safety.
+# Deploy with Dapr
+dapr init
+dapr run --app-id todo-api -- python -m backend.main
+```
 
-9. Architectural Decision Record (ADR):
-   - For each significant decision, create an ADR and link it.
+### 🛠️ Spec-Driven Commands
+```bash
+# Generate specification
+/sp.specify "Add user authentication feature"
 
-### Architecture Decision Records (ADR) - Intelligent Suggestion
+# Generate implementation plan
+/sp.plan "Implementation requirements: JWT auth, role-based access"
 
-After design/architecture work, test for ADR significance:
+# Generate development tasks
+/sp.tasks
 
-- Impact: long-term consequences? (e.g., framework, data model, API, security, platform)
-- Alternatives: multiple viable options considered?
-- Scope: cross‑cutting and influences system design?
+# Execute implementation
+/sp.implement
 
-If ALL true, suggest:
-📋 Architectural decision detected: [brief-description]
-   Document reasoning and tradeoffs? Run `/sp.adr [decision-title]`
+# Create ADR
+/sp.adr "Authentication-Strategy"
 
-Wait for consent; never auto-create ADRs. Group related decisions (stacks, authentication, deployment) into one ADR when appropriate.
+# Record PHR
+/sp.phr
+```
 
-## Basic Project Structure
+---
 
-- `.specify/memory/constitution.md` — Project principles
-- `specs/<feature>/spec.md` — Feature requirements
-- `specs/<feature>/plan.md` — Architecture decisions
-- `specs/<feature>/tasks.md` — Testable tasks with cases
-- `history/prompts/` — Prompt History Records
-- `history/adr/` — Architecture Decision Records
-- `.specify/` — SpecKit Plus templates and scripts
+## 💡 Debugging Tips
 
-## Code Standards
-See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+### 🔧 Phase I - Console App
+- **Performance**: Use the built-in performance test to verify O(1) operations
+- **Memory**: Monitor memory usage with 1000+ tasks
+- **Validation**: Test edge cases with invalid inputs
 
-## Active Technologies
-- Python 3.13+ with type hints + UV for package management, standard library only (no external dependencies) (001-cli-todo-app)
-- In-memory storage using dictionary (001-cli-todo-app)
+### 🌐 Phase II - Full-Stack Web
+- **Database**: Use Neon console to monitor queries and connections
+- **Authentication**: Check JWT token validity with jwt.io
+- **CORS**: Verify frontend/backend URL matching
+- **Environment**: Use `.env` files for local development
 
-## Recent Changes
-- 001-cli-todo-app: Added Python 3.13+ with type hints + UV for package management, standard library only (no external dependencies)
+### 🤖 Phase III - AI Integration
+- **API Limits**: Monitor OpenAI rate limits and costs
+- **Context Window**: Keep conversation history optimized
+- **MCP Debugging**: Enable verbose logging for MCP server
+- **Agent State**: Track conversation state across turns
+
+### ☸️ Phase IV - Kubernetes
+- **Logs**: `kubectl logs -f deployment/todo-app`
+- **Port Forwarding**: `kubectl port-forward` for local testing
+- **Helm**: `helm list` and `helm status` for deployment status
+- **Dapr**: `dapr list` to see running services
+
+### ☁️ Phase V - Cloud Production
+- **Monitoring**: Set up Prometheus metrics and Grafana dashboards
+- **Logging**: Use structured logging with correlation IDs
+- **Tracing**: Implement distributed tracing with Jaeger
+- **Alerting**: Set up alerts for service degradation
+
+### 🐛 Common Debugging Commands
+```bash
+# Check environment variables
+printenv | grep TODO
+
+# Python debugging
+python -m pdb script.py
+
+# Frontend debugging
+npm run build && npm run start
+
+# Database debugging
+psql "connection_string" -c "SELECT * FROM tasks;"
+
+# Kubernetes debugging
+kubectl describe pod <pod-name>
+kubectl exec -it <pod-name> -- /bin/bash
+```
+
+---
+
+## 📚 Notes & Resources
+
+### 📖 Key Documentation Links
+- **Neon DB**: [https://neon.tech/docs](https://neon.tech/docs)
+- **Vercel**: [https://vercel.com/docs](https://vercel.com/docs)
+- **DigitalOcean**: [https://docs.digitalocean.com](https://docs.digitalocean.com)
+- **Kubernetes**: [https://kubernetes.io/docs](https://kubernetes.io/docs)
+- **Dapr**: [https://docs.dapr.io](https://docs.dapr.io)
+- **FastAPI**: [https://fastapi.tiangolo.com](https://fastapi.tiangolo.com)
+- **Better Auth**: [https://better-auth.com](https://better-auth.com)
+
+### 🎯 Spec-Driven Workflow Integration
+1. **Specification Phase**: Write `spec.md` with user stories and requirements
+2. **Planning Phase**: Generate `plan.md` with technical approach
+3. **Task Generation**: Create `tasks.md` with implementation steps
+4. **Implementation**: Execute tasks with `/sp.implement`
+5. **Verification**: Test against original specifications
+6. **Documentation**: Update all artifacts for next phase
+
+### 🔄 Phase Transition Checklist
+- [ ] All specs completed and validated
+- [ ] Tests passing at current phase
+- [ ] Performance requirements met
+- [ ] Security audit completed
+- [ ] Documentation updated
+- [ ] Migration plan for next phase ready
+
+### 🚨 Important Considerations
+- **Data Migration**: Plan for data persistence between phases
+- **Backward Compatibility**: Maintain API compatibility when possible
+- **Cost Management**: Monitor cloud costs in Phase V
+- **Scalability**: Design for horizontal scaling from Phase II
+- **Observability**: Implement logging, metrics, and tracing early
+
+### 🤝 Collaboration Guidelines
+- **Pull Requests**: Always link to related specification
+- **Code Reviews**: Focus on spec compliance and architecture
+- **Branch Strategy**: Feature branches from main for each phase
+- **Versioning**: Use semantic versioning across all phases
+
+This comprehensive setup enables the evolution from a simple console app to a sophisticated, cloud-native AI-powered application while maintaining spec-driven development principles throughout the journey.

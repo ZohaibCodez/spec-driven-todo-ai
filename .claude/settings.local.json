@@ -16,7 +16,8 @@
       "Bash(PYTHONPATH=. python3 -m unittest tests.unit.test_storage.test_task_storage -v)",
       "Bash(PYTHONPATH=. python3 -m unittest tests.unit.test_cli.test_cli_add_task -v)",
       "Bash(PYTHONPATH=. python3 -m unittest tests.integration.test_end_to_end -v)",
-      "Bash(PYTHONPATH=. python3 -c \"from src.cli.main import TodoCLI; cli = TodoCLI(); print(''Application imported successfully'')\")"
+      "Bash(PYTHONPATH=. python3 -c \"from src.cli.main import TodoCLI; cli = TodoCLI(); print(''Application imported successfully'')\")",
+      "Bash(PYTHONPATH=. python3 -c \"\nimport time\nfrom src.storage.task_storage import TaskStorage\n\n# Create a storage instance\nstorage = TaskStorage()\n\n# Add multiple tasks to test performance\nstart_time = time.time()\nfor i in range(1000):\n    storage.add_task(f''Task {i}'', f''Description for task {i}'')\nend_time = time.time()\n\nprint(f''Time to add 1000 tasks: {end_time - start_time:.4f} seconds'')\n\n# Test retrieval performance\nstart_time = time.time()\nfor i in range(0, 1000, 100):  # Check every 100th task\n    task = storage.get_task(i+1)\nend_time = time.time()\n\nprint(f''Time to retrieve 10 tasks: {end_time - start_time:.6f} seconds'')\n\n# Test other operations\nstart_time = time.time()\nfor i in range(0, 100, 10):  # Toggle first 10 tasks\n    storage.toggle_task_status(i+1)\nend_time = time.time()\n\nprint(f''Time to toggle 10 tasks: {end_time - start_time:.6f} seconds'')\n\nprint(''Performance verification completed successfully'')\n\")"
     ]
   }
 }
