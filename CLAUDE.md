@@ -2,16 +2,16 @@
 
 @AGENTS.md
 
-## 📋 Overview
+## 📋 Project Overview
 
-Welcome to the **Hackathon II Todo Application** - a progressive, spec-driven project that evolves through 5 phases from a simple Python console app to a full cloud-native deployment with AI capabilities.
+Welcome to the **Hackathon II Todo Application** - a progressive, spec-driven project that evolves through 5 phases from a simple Python console app to a full cloud-native deployment with AI capabilities. The project currently includes a fully functional backend API with CRUD operations built using FastAPI and SQLModel.
 
 ### 🎯 Project Vision
 A comprehensive todo application that demonstrates modern development practices, from basic CLI functionality to AI-powered workflows and cloud-native deployment patterns.
 
 ### 📊 Phase Evolution
 - **Phase I** 📟: Python console app (in-memory storage)
-- **Phase II** 🌐: Full-stack web app (Next.js + FastAPI + Neon DB)
+- **Phase II** 🌐: Full-stack web app (Next.js + FastAPI + Neon DB) - *Currently implemented*
 - **Phase III** 🤖: AI chatbot (OpenAI Agents + MCP)
 - **Phase IV** ☸️: Local Kubernetes (Minikube + Helm)
 - **Phase V** ☁️: Cloud deployment (DigitalOcean/GKE + Kafka + Dapr)
@@ -24,7 +24,7 @@ This project uses **spec-driven development** methodology with:
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 ### Phase I - Console App
 - **Language**: Python 3.12+
@@ -32,11 +32,15 @@ This project uses **spec-driven development** methodology with:
 - **Storage**: In-memory dictionary
 - **Dependencies**: Standard library only
 
-### Phase II - Full-Stack Web
-- **Frontend**: Next.js 14+ (App Router)
-- **Backend**: FastAPI 0.104+
-- **Database**: Neon PostgreSQL
-- **Auth**: Better Auth (JWT)
+### Phase II - Full-Stack Web (Currently Active)
+- **Backend Framework**: FastAPI 0.104+
+- **ORM**: SQLModel for database operations
+- **Database**: Neon Serverless PostgreSQL
+- **Environment Management**: python-dotenv
+- **Database Driver**: psycopg2-binary
+- **ASGI Server**: Uvicorn
+- **Frontend**: Next.js 14+ (App Router) - *planned*
+- **Auth**: Better Auth (JWT) - *planned*
 - **Deployment**: Vercel (frontend), Railway/Deta (backend)
 
 ### Phase III - AI Integration
@@ -57,97 +61,96 @@ This project uses **spec-driven development** methodology with:
 
 ---
 
-## 📁 Project Structure
+## 📁 Directory Structure
 
 ```
-hackathon-todo/
-├── 📁 specs/                    # Spec-driven development artifacts
-│   ├── 📁 phase-i-console/     # Phase I specifications
+spec-driven-todo-ai/
+├── 📁 .specify/                 # Spec-KitPlus configuration
+│   ├── 📁 memory/              # Constitution and project memory
+│   ├── 📁 scripts/             # Automation scripts
+│   │   └── 📁 bash/            # Bash scripts for project management
+│   └── 📁 templates/           # Template files for specs, plans, tasks
+├── 📁 specs/                   # Spec-driven development artifacts
+│   ├── 📁 001-cli-todo-app/   # Phase I specifications
 │   │   ├── spec.md            # Feature specification
 │   │   ├── plan.md            # Implementation plan
 │   │   ├── tasks.md           # Development tasks
-│   │   └── contracts/         # API contracts
-│   ├── 📁 phase-ii-web/       # Phase II specifications
-│   │   ├── spec.md
-│   │   ├── plan.md
-│   │   └── tasks.md
-│   ├── 📁 phase-iii-ai/       # Phase III specifications
-│   │   ├── spec.md
-│   │   ├── plan.md
-│   │   └── tasks.md
-│   ├── 📁 phase-iv-k8s/       # Phase IV specifications
-│   │   ├── spec.md
-│   │   ├── plan.md
-│   │   └── tasks.md
-│   └── 📁 phase-v-cloud/      # Phase V specifications
-│       ├── spec.md
-│       ├── plan.md
-│       └── tasks.md
-├── 📁 frontend/                # Next.js application (Phase II+)
-│   ├── src/
-│   ├── pages/
-│   ├── components/
-│   └── package.json
-├── 📁 backend/                 # FastAPI application (Phase II+)
-│   ├── src/
-│   ├── api/
-│   ├── models/
-│   ├── services/
-│   └── requirements.txt
-├── 📁 ai/                      # AI agents and MCP (Phase III+)
-│   ├── agents/
-│   ├── mcp/
-│   └── config/
+│   │   ├── contracts/         # API contracts
+│   │   └── checklists/        # Validation checklists
+│   └── 📁 001-backend-api/    # Phase II specifications (currently active)
+│       ├── spec.md            # Feature specification
+│       ├── plan.md            # Implementation plan
+│       ├── tasks.md           # Development tasks
+│       ├── contracts/         # API contracts
+│       ├── data-model.md      # Data model definition
+│       ├── research.md        # Research summary
+│       ├── quickstart.md      # Quickstart guide
+│       └── checklists/        # Validation checklists
+├── 📁 backend/                 # FastAPI backend implementation
+│   ├── main.py                # FastAPI app entry point
+│   ├── models.py              # SQLModel database models
+│   ├── database.py            # Database connection setup
+│   ├── schemas.py             # Pydantic request/response models
+│   ├── requirements.txt       # Python dependencies
+│   ├── .env                   # Environment variables template
+│   ├── .gitignore             # Git ignore file
+│   ├── README.md              # Project documentation
+│   ├── test_api.py            # API validation test script
+│   ├── validate_setup.py      # Setup validation script
+│   └── 📁 routes/             # API route definitions
+│       └── tasks.py           # Task CRUD endpoints
+├── 📁 frontend/               # Next.js application (planned)
+│   └── ...
+├── 📁 ai/                     # AI agents and MCP (Phase III+)
+│   └── ...
 ├── 📁 k8s/                    # Kubernetes manifests (Phase IV+)
-│   ├── helm/
-│   ├── manifests/
-│   └── kustomize/
-├── 📁 .specify/               # Spec-KitPlus configuration
-│   ├── memory/
-│   ├── scripts/
-│   └── templates/
+│   └── ...
 ├── 📁 history/                # Prompt history records
-│   └── prompts/
-├── 📄 CLAUDE.md              # This file
-├── 📄 AGENTS.md              # Agent specifications
-├── 📄 pyproject.toml         # Python configuration
-├── 📄 package.json           # Frontend dependencies
-├── 📄 docker-compose.yml     # Local development
-└── 📄 README.md              # Project documentation
+│   └── 📁 prompts/
+│       └── 📁 001-backend-api/
+├── 📁 tests/                  # Test files (planned)
+├── .gitignore                 # Git ignore file
+├── .env                       # Environment variables
+├── CLAUDE.md                  # This file
+├── AGENTS.md                  # Agent specifications
+├── pyproject.toml             # Python configuration
+├── README.md                  # Project documentation
+└── package.json               # Frontend dependencies (planned)
 ```
 
 ---
 
-## 📐 Development Conventions
+## 📐 Coding Conventions
 
 ### 🏗️ Architecture Principles
-1. **Separation of Concerns**: Clear boundaries between layers
+1. **Separation of Concerns**: Clear boundaries between models, routes, and services
 2. **Spec-First**: All features start with specifications
 3. **Test-Driven**: Write tests before implementation
 4. **Security-First**: Authentication and validation at every layer
 
 ### 📝 Code Standards
 - **Python**: PEP 8 with type hints (mypy)
-- **JavaScript**: ESLint + Prettier
+- **TypeScript**: ESLint + Prettier
 - **Documentation**: Comprehensive docstrings
 - **Commits**: Conventional commits format
 
 ### 🔐 Security Considerations
-- **JWT Authentication**: Better Auth for secure sessions
+- **JWT Authentication**: Better Auth for secure sessions (planned)
 - **Input Validation**: All user inputs validated at API boundary
-- **SQL Injection**: Parameterized queries with SQLAlchemy
-- **XSS Protection**: Sanitized outputs in web app
+- **SQL Injection**: Parameterized queries with SQLAlchemy/SQLModel
+- **XSS Protection**: Sanitized outputs in web app (frontend)
 - **Secrets Management**: Environment variables, never hardcoded
 
 ### 🏗️ Naming Conventions
 - **Python**: `snake_case` for functions, `PascalCase` for classes
-- **JavaScript**: `camelCase` for variables and functions
+- **TypeScript**: `camelCase` for variables and functions
 - **Files**: Descriptive names with clear purpose
 - **Branches**: `feature/phase-ii-user-auth`, `bugfix/login-issue`
+- **Database**: `snake_case` for table and column names
 
 ---
 
-## ⚡ Development Commands
+## ⚡ Key Commands
 
 ### 🚀 Phase I - Console App
 ```bash
@@ -159,27 +162,20 @@ python -m src.cli.main
 
 # Run tests
 PYTHONPATH=. python3 -m unittest discover tests/ -v
-
-# Run performance tests
-PYTHONPATH=. python3 -c "
-import time
-from src.storage.task_storage import TaskStorage
-storage = TaskStorage()
-start_time = time.time()
-for i in range(1000): storage.add_task(f'Task {i}')
-print(f'1000 tasks in {time.time() - start_time:.4f}s')
-"
 ```
 
-### 🌐 Phase II - Full-Stack Web
+### 🌐 Phase II - Full-Stack Web (Current Implementation)
 ```bash
-# Backend (in backend/ directory)
+# Backend setup and run (in backend/ directory)
+cd backend
 pip install -r requirements.txt
-uvicorn src.main:app --reload
+uvicorn main:app --reload
 
-# Frontend (in frontend/ directory)
-npm install
-npm run dev
+# Run backend validation
+python validate_setup.py
+
+# Test API endpoints
+python test_api.py
 
 # Database setup
 neonctl projects create
@@ -244,97 +240,45 @@ dapr run --app-id todo-api -- python -m backend.main
 
 ---
 
-## 💡 Debugging Tips
+## 💡 Important Notes
 
-### 🔧 Phase I - Console App
-- **Performance**: Use the built-in performance test to verify O(1) operations
-- **Memory**: Monitor memory usage with 1000+ tasks
-- **Validation**: Test edge cases with invalid inputs
+### Backend API Implementation Details
+- **API Documentation**: Available at `http://localhost:8000/docs` when running
+- **CORS**: Currently allows all origins (update for production)
+- **Database**: Uses SQLModel with Neon PostgreSQL
+- **Models**: Task model with id, title, description, completed, created_at, updated_at
+- **Endpoints**:
+  - `POST /api/tasks` - Create a task
+  - `GET /api/tasks` - List all tasks
+  - `GET /api/tasks/{id}` - Get a specific task
+  - `PUT /api/tasks/{id}` - Update a task
+  - `DELETE /api/tasks/{id}` - Delete a task
+  - `PATCH /api/tasks/{id}/complete` - Toggle task completion
 
-### 🌐 Phase II - Full-Stack Web
-- **Database**: Use Neon console to monitor queries and connections
-- **Authentication**: Check JWT token validity with jwt.io
-- **CORS**: Verify frontend/backend URL matching
-- **Environment**: Use `.env` files for local development
+### Security Considerations
+- **Environment Variables**: Store sensitive data in `.env` file
+- **CORS Configuration**: Currently permissive for development, restrict in production
+- **Input Validation**: All endpoints validate input using Pydantic models
+- **Error Handling**: Proper HTTP status codes for different scenarios
 
-### 🤖 Phase III - AI Integration
-- **API Limits**: Monitor OpenAI rate limits and costs
-- **Context Window**: Keep conversation history optimized
-- **MCP Debugging**: Enable verbose logging for MCP server
-- **Agent State**: Track conversation state across turns
+### Development Workflow
+- **Spec-Driven**: Always start with `/sp.specify` to create feature specifications
+- **Implementation Tracking**: Use `/sp.plan`, `/sp.tasks`, and `/sp.implement` for structured development
+- **Validation**: Run validation scripts to ensure setup is correct
 
-### ☸️ Phase IV - Kubernetes
-- **Logs**: `kubectl logs -f deployment/todo-app`
-- **Port Forwarding**: `kubectl port-forward` for local testing
-- **Helm**: `helm list` and `helm status` for deployment status
-- **Dapr**: `dapr list` to see running services
+### Gotchas & Critical Context
+- **Database Migrations**: Need to implement Alembic for production use
+- **Authentication**: Not yet implemented but planned for Phase II
+- **Testing**: Unit and integration tests need to be added
+- **Environment**: Ensure `.env` file is properly configured with database connection
+- **Dependencies**: Use `uv` or `pip` consistently throughout the project
+- **Database URLs**: Neon PostgreSQL connection strings require proper SSL configuration
 
-### ☁️ Phase V - Cloud Production
-- **Monitoring**: Set up Prometheus metrics and Grafana dashboards
-- **Logging**: Use structured logging with correlation IDs
-- **Tracing**: Implement distributed tracing with Jaeger
-- **Alerting**: Set up alerts for service degradation
-
-### 🐛 Common Debugging Commands
-```bash
-# Check environment variables
-printenv | grep TODO
-
-# Python debugging
-python -m pdb script.py
-
-# Frontend debugging
-npm run build && npm run start
-
-# Database debugging
-psql "connection_string" -c "SELECT * FROM tasks;"
-
-# Kubernetes debugging
-kubectl describe pod <pod-name>
-kubectl exec -it <pod-name> -- /bin/bash
-```
-
----
-
-## 📚 Notes & Resources
-
-### 📖 Key Documentation Links
-- **Neon DB**: [https://neon.tech/docs](https://neon.tech/docs)
-- **Vercel**: [https://vercel.com/docs](https://vercel.com/docs)
-- **DigitalOcean**: [https://docs.digitalocean.com](https://docs.digitalocean.com)
-- **Kubernetes**: [https://kubernetes.io/docs](https://kubernetes.io/docs)
-- **Dapr**: [https://docs.dapr.io](https://docs.dapr.io)
-- **FastAPI**: [https://fastapi.tiangolo.com](https://fastapi.tiangolo.com)
-- **Better Auth**: [https://better-auth.com](https://better-auth.com)
-
-### 🎯 Spec-Driven Workflow Integration
-1. **Specification Phase**: Write `spec.md` with user stories and requirements
-2. **Planning Phase**: Generate `plan.md` with technical approach
-3. **Task Generation**: Create `tasks.md` with implementation steps
-4. **Implementation**: Execute tasks with `/sp.implement`
-5. **Verification**: Test against original specifications
-6. **Documentation**: Update all artifacts for next phase
-
-### 🔄 Phase Transition Checklist
-- [ ] All specs completed and validated
-- [ ] Tests passing at current phase
-- [ ] Performance requirements met
-- [ ] Security audit completed
-- [ ] Documentation updated
-- [ ] Migration plan for next phase ready
-
-### 🚨 Important Considerations
-- **Data Migration**: Plan for data persistence between phases
-- **Backward Compatibility**: Maintain API compatibility when possible
-- **Cost Management**: Monitor cloud costs in Phase V
-- **Scalability**: Design for horizontal scaling from Phase II
-- **Observability**: Implement logging, metrics, and tracing early
-
-### 🤝 Collaboration Guidelines
-- **Pull Requests**: Always link to related specification
-- **Code Reviews**: Focus on spec compliance and architecture
-- **Branch Strategy**: Feature branches from main for each phase
-- **Versioning**: Use semantic versioning across all phases
+### Migration Path to Next Phase
+- **Frontend Integration**: Next.js app needs to be created in frontend/ directory
+- **Authentication**: JWT-based auth needs to be implemented
+- **Frontend API Calls**: Connect frontend to backend API endpoints
+- **UI Components**: Build React components for task management
 
 This comprehensive setup enables the evolution from a simple console app to a sophisticated, cloud-native AI-powered application while maintaining spec-driven development principles throughout the journey.
 
