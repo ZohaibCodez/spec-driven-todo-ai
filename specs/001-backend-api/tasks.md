@@ -26,10 +26,10 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create backend directory structure
-- [ ] T002 Create requirements.txt with FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary
-- [ ] T003 [P] Create .env file template with DATABASE_URL placeholder
-- [ ] T004 Create README.md for backend API
+- [X] T001 Create backend directory structure
+- [X] T002 Create requirements.txt with FastAPI, SQLModel, Uvicorn, Python-dotenv, psycopg2-binary
+- [X] T003 [P] Create .env file template with DATABASE_URL placeholder
+- [X] T004 Create README.md for backend API
 
 ---
 
@@ -39,11 +39,11 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create database.py with Neon PostgreSQL connection setup using SQLModel
-- [ ] T006 Create models.py with Task SQLModel entity based on data-model.md
-- [ ] T007 Create schemas.py with Pydantic models (TaskCreate, TaskUpdate, TaskResponse) based on data-model.md
-- [ ] T008 Create main.py with FastAPI app initialization and CORS middleware
-- [ ] T009 Configure environment variables loading with python-dotenv
+- [X] T005 Create database.py with Neon PostgreSQL connection setup using SQLModel
+- [X] T006 Create models.py with Task SQLModel entity based on data-model.md
+- [X] T007 Create schemas.py with Pydantic models (TaskCreate, TaskUpdate, TaskResponse) based on data-model.md
+- [X] T008 Create main.py with FastAPI app initialization and CORS middleware
+- [X] T009 Configure environment variables loading with python-dotenv
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,11 +57,11 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T010 Create routes/tasks.py with POST /api/tasks endpoint for creating tasks
-- [ ] T011 [P] [US1] Implement GET /api/tasks/{id} endpoint for retrieving single task
-- [ ] T012 [US1] Add POST /api/tasks route to main.py application
-- [ ] T013 [US1] Add GET /api/tasks/{id} route to main.py application
-- [ ] T014 [US1] Test creation and retrieval of a task to verify functionality
+- [X] T010 Create routes/tasks.py with POST /api/tasks endpoint for creating tasks
+- [X] T011 [P] [US1] Implement GET /api/tasks/{id} endpoint for retrieving single task
+- [X] T012 [US1] Add POST /api/tasks route to main.py application
+- [X] T013 [US1] Add GET /api/tasks/{id} route to main.py application
+- [X] T014 [US1] Test creation and retrieval of a task to verify functionality
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -75,11 +75,11 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] Create PUT /api/tasks/{id} endpoint for updating tasks in routes/tasks.py
-- [ ] T016 [US2] Create DELETE /api/tasks/{id} endpoint for deleting tasks in routes/tasks.py
-- [ ] T017 [US2] Add PUT /api/tasks/{id} route to main.py application
-- [ ] T018 [US2] Add DELETE /api/tasks/{id} route to main.py application
-- [ ] T019 [US2] Test update and delete functionality to verify full task lifecycle
+- [X] T015 [US2] Create PUT /api/tasks/{id} endpoint for updating tasks in routes/tasks.py
+- [X] T016 [US2] Create DELETE /api/tasks/{id} endpoint for deleting tasks in routes/tasks.py
+- [X] T017 [US2] Add PUT /api/tasks/{id} route to main.py application
+- [X] T018 [US2] Add DELETE /api/tasks/{id} route to main.py application
+- [X] T019 [US2] Test update and delete functionality to verify full task lifecycle
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -93,9 +93,9 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T020 [US3] Create GET /api/tasks endpoint for listing all tasks in routes/tasks.py
-- [ ] T021 [US3] Add GET /api/tasks route to main.py application
-- [ ] T022 [US3] Test listing all tasks functionality with multiple created tasks
+- [X] T020 [US3] Create GET /api/tasks endpoint for listing all tasks in routes/tasks.py
+- [X] T021 [US3] Add GET /api/tasks route to main.py application
+- [X] T022 [US3] Test listing all tasks functionality with multiple created tasks
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -109,9 +109,9 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 ### Implementation for User Story 4
 
-- [ ] T023 [US4] Create PATCH /api/tasks/{id}/complete endpoint for toggling completion status in routes/tasks.py
-- [ ] T024 [US4] Add PATCH /api/tasks/{id}/complete route to main.py application
-- [ ] T025 [US4] Test toggle completion functionality to verify status changes
+- [X] T023 [US4] Create PATCH /api/tasks/{id}/complete endpoint for toggling completion status in routes/tasks.py
+- [X] T024 [US4] Add PATCH /api/tasks/{id}/complete route to main.py application
+- [X] T025 [US4] Test toggle completion functionality to verify status changes
 
 **Checkpoint**: All user stories should now be functional
 
@@ -121,12 +121,12 @@ description: "Task list for Backend API Foundation - Basic CRUD implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T026 [P] Add proper error handling with appropriate HTTP status codes throughout all endpoints
-- [ ] T027 [P] Add input validation for all endpoints based on data-model.md validation rules
-- [ ] T028 [P] Add timestamp auto-generation for created_at and updated_at fields
-- [ ] T029 Add comprehensive documentation to README.md
-- [ ] T030 Test all endpoints manually to ensure proper JSON responses and status codes
-- [ ] T031 Run quickstart validation to ensure setup instructions work correctly
+- [X] T026 [P] Add proper error handling with appropriate HTTP status codes throughout all endpoints
+- [X] T027 [P] Add input validation for all endpoints based on data-model.md validation rules
+- [X] T028 [P] Add timestamp auto-generation for created_at and updated_at fields
+- [X] T029 Add comprehensive documentation to README.md
+- [X] T030 Test all endpoints manually to ensure proper JSON responses and status codes
+- [X] T031 Run quickstart validation to ensure setup instructions work correctly
 
 ---
 

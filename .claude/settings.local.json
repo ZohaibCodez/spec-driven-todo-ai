@@ -26,7 +26,10 @@
       "Bash(chmod +x .specify/scripts/bash/setup-plan.sh)",
       "Bash(chmod +x .specify/scripts/bash/update-agent-context.sh)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-plan\" --stage plan --feature \"001-backend-api\" --json)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-tasks\" --stage tasks --feature \"001-backend-api\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-tasks\" --stage tasks --feature \"001-backend-api\" --json)",
+      "Bash(python validate_setup.py)",
+      "Bash(python3 validate_setup.py)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-impl\" --stage tasks --feature \"001-backend-api\" --json)"
     ]
   }
 }
