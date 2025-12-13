@@ -37,7 +37,9 @@
       "Bash(git fetch --all --prune)",
       "Bash(ls -1d specs/[0-9]*-todo-ui)",
       "Bash(.specify/scripts/bash/create-new-feature.sh --json \"Create specification for \"\"Frontend Foundation - Todo UI\"\":\n\nUser Stories:\n1. As a user, I can see a list of all my tasks\n2. As a user, I can add a new task with title and description\n3. As a user, I can mark a task as complete/incomplete\n4. As a user, I can delete a task\n5. As a user, I can edit a task''s title and description\n\nRequirements:\n- Set up Next.js 15 project in /frontend folder using App Router\n- Use TypeScript and Tailwind CSS\n- Create a single-page interface with task list and add task form\n- Create API client module to communicate with FastAPI backend\n- Implement responsive UI that works on mobile and desktop\n- Show loading states during API calls\n- Show error messages if API calls fail\n\nAcceptance Criteria:\n- Next.js app runs on port 3000\n- All CRUD operations work through the UI\n- UI updates immediately after operations (optimistic updates)\n- Clean, modern design using Tailwind CSS\n- No page refreshes needed\n- Proper error handling with user-friendly messages\" --number 1 --short-name \"todo-ui\")",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-spec\" --stage spec --feature \"001-todo-ui\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-spec\" --stage spec --feature \"001-todo-ui\" --json)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --paths-only)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-clarify\" --stage spec --feature \"001-todo-ui\" --json)"
     ]
   }
 }

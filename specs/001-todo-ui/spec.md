@@ -26,6 +26,16 @@ Acceptance Criteria:
 - No page refreshes needed
 - Proper error handling with user-friendly messages"
 
+## Clarifications
+
+### Session 2025-12-13
+
+- Q: What level of UI sophistication should we implement? → A: Modern, accessible design with dark/light mode support
+- Q: Should tasks be associated with individual user accounts? → A: No user accounts but tasks assigned via session/anonymous user concept
+- Q: How long should tasks persist for a user? → A: Tasks persist for 30 days of inactivity before being automatically deleted
+- Q: Should users have the ability to organize or filter their tasks in different ways? → A: Advanced organization with categories, tags, due dates, and multiple sorting options
+- Q: Should the application provide functionality for users to export their tasks? → A: Basic export functionality (JSON/CSV) for task backup and migration
+
 ### User Story 1 - View Task List (Priority: P1)
 
 As a user, I can see a list of all my tasks displayed in a clean, organized manner. The interface should be intuitive and allow me to quickly scan through my tasks to understand what needs to be done.
@@ -121,11 +131,27 @@ As a user, I can modify the title and description of an existing task by clickin
 - **FR-008**: System MUST display appropriate error messages when API calls fail
 - **FR-009**: System MUST update the UI immediately after operations (optimistic updates)
 - **FR-010**: System MUST provide a responsive interface that works on mobile and desktop devices
+- **FR-011**: System MUST support both light and dark color themes with WCAG-compliant contrast ratios
+- **FR-012**: System MUST implement modern UI/UX design patterns with accessible color schemes
+- **FR-013**: System MUST associate tasks with an anonymous session/user concept for data persistence
+- **FR-014**: System MUST maintain task isolation between different anonymous sessions
+- **FR-015**: System MUST automatically delete tasks after 30 days of user inactivity
+- **FR-016**: System MUST inform users about the task retention policy in the UI
+- **FR-017**: System MUST allow users to assign categories to tasks for organization
+- **FR-018**: System MUST allow users to add tags to tasks for flexible filtering
+- **FR-019**: System MUST allow users to set due dates for tasks
+- **FR-020**: System MUST provide multiple sorting options (by date, priority, title, etc.)
+- **FR-021**: System MUST provide filtering capabilities by completion status, category, tags, and due dates
+- **FR-022**: System MUST provide export functionality for tasks in JSON format
+- **FR-023**: System MUST provide export functionality for tasks in CSV format
 
 ### Key Entities
 
-- **Task**: Represents a user's todo item with attributes: title, description, completion status, creation date, update date
+- **Task**: Represents a user's todo item with attributes: title, description, completion status, creation date, update date, due date, category, tags
 - **User Interface**: The visual components that allow users to interact with their tasks through viewing, adding, editing, completing, and deleting
+- **Anonymous Session**: Represents an anonymous user context that maintains task data persistence and isolation between different users
+- **Category**: Represents a user-defined grouping for organizing related tasks
+- **Tag**: Represents a keyword or label that can be applied to tasks for filtering and organization
 
 ## Success Criteria *(mandatory)*
 
@@ -137,3 +163,11 @@ As a user, I can modify the title and description of an existing task by clickin
 - **SC-004**: Users can perform all CRUD operations (create, read, update, delete) through the UI with 95% success rate
 - **SC-005**: The application displays appropriate loading states during API calls to provide feedback to users
 - **SC-006**: Error handling provides user-friendly messages when operations fail, with clear guidance on how to resolve issues
+- **SC-007**: The UI provides both light and dark themes with WCAG-compliant color contrast ratios
+- **SC-008**: The application implements modern, accessible design patterns with intuitive user interactions
+- **SC-009**: Tasks are automatically deleted after 30 days of user inactivity
+- **SC-010**: Users are informed about the task retention policy through clear UI messaging
+- **SC-011**: Users can organize tasks using categories, tags, and due dates
+- **SC-012**: Users can sort and filter tasks by multiple criteria (status, category, tags, due date)
+- **SC-013**: Users can export their tasks in JSON format for backup and migration
+- **SC-014**: Users can export their tasks in CSV format for backup and migration
