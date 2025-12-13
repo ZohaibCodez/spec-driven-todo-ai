@@ -6,7 +6,17 @@
       "Bash(find .specify/scripts/bash -type f -name \"*.sh\" -exec sed -i 's/\\r$//' {} ;)",
       "Bash(.specify/scripts/bash/update-agent-context.sh claude)",
       "Bash(.specify/scripts/bash/check-prerequisites.sh --json)",
-      "Bash(chmod +x .specify/scripts/bash/check-prerequisites.sh)"
+      "Bash(chmod +x .specify/scripts/bash/check-prerequisites.sh)",
+      "SlashCommand(/sp.implement)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)",
+      "Bash(git rev-parse --git-dir)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python3 -m unittest discover tests/ -v)",
+      "Bash(python3 tests/unit/test_storage/test_task_storage.py)",
+      "Bash(PYTHONPATH=. python3 -m unittest tests.unit.test_storage.test_task_storage -v)",
+      "Bash(PYTHONPATH=. python3 -m unittest tests.unit.test_cli.test_cli_add_task -v)",
+      "Bash(PYTHONPATH=. python3 -m unittest tests.integration.test_end_to_end -v)",
+      "Bash(PYTHONPATH=. python3 -c \"from src.cli.main import TodoCLI; cli = TodoCLI(); print(''Application imported successfully'')\")"
     ]
   }
 }
