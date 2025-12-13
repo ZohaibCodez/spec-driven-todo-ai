@@ -514,23 +514,8 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 
 <div align="center">
 
-**Built with ❤️ using FastAPI and Python**
+**Built with 🖤 using FastAPI and Python**
 
 ⭐ Star this repo if you find it helpful!
 
 </div>
-
-## 🔍 SEO Keywords
-
-fastapi backend, python rest api, sqlmodel tutorial, fastapi crud, postgresql python, python async api, fastapi example, sqlalchemy fastapi, neon database, serverless postgres, python api development, fastapi best practices, rest api python, fastapi tutorial, python backend, task management api, fastapi postgresql, python web api, modern python backend, fastapi sqlmodel, async python api
-backend/
-├── main.py              # FastAPI app entry point
-├── models.py            # SQLModel database models
-├── database.py          # Database connection
-├── routes/
-│   └── tasks.py         # Task CRUD endpoints
-├── schemas.py           # Pydantic request/response models
-├── .env                 # Environment variables
-├── requirements.txt     # Python dependencies
-└── README.md            # Project documentation
-```

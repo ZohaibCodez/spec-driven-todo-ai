@@ -26,7 +26,7 @@ description: "Task list for user-scoped tasks feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Update requirements.txt with any new dependencies for user authentication (if needed)
+- [X] T001 Update requirements.txt with any new dependencies for user authentication (if needed)
 - [ ] T002 Create database migration files for User model using Alembic
 
 ---
@@ -37,12 +37,12 @@ description: "Task list for user-scoped tasks feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Create User model in backend/models.py with id, email, name, created_at fields
-- [ ] T004 Update Task model in backend/models.py to add user_id foreign key relationship
-- [ ] T005 [P] Update Pydantic schemas in backend/schemas.py to include User-related schemas
-- [ ] T006 [P] Update database.py to include User model in SQLModel registry
+- [X] T003 Create User model in backend/models.py with id, email, name, created_at fields
+- [X] T004 Update Task model in backend/models.py to add user_id foreign key relationship
+- [X] T005 [P] Update Pydantic schemas in backend/schemas.py to include User-related schemas
+- [X] T006 [P] Update database.py to include User model in SQLModel registry
 - [ ] T007 Create database migration for User table and Task user_id column using Alembic
-- [ ] T008 [P] Create UserService class in backend/services/user_service.py for user operations
+- [X] T008 [P] Create UserService class in backend/services/user_service.py for user operations
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,11 +63,11 @@ description: "Task list for user-scoped tasks feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Create UserCreate and UserRead Pydantic schemas in backend/schemas.py
-- [ ] T012 [US1] Implement UserService.create_user method in backend/services/user_service.py
-- [ ] T013 [US1] Create user creation endpoint POST /api/users in backend/routes/users.py
-- [ ] T014 [US1] Add email uniqueness validation to User model
-- [ ] T015 [US1] Add validation for required email and name fields
+- [X] T011 [P] [US1] Create UserCreate and UserRead Pydantic schemas in backend/schemas.py
+- [X] T012 [US1] Implement UserService.create_user method in backend/services/user_service.py
+- [X] T013 [US1] Create user creation endpoint POST /api/users in backend/routes/users.py
+- [X] T014 [US1] Add email uniqueness validation to User model
+- [X] T015 [US1] Add validation for required email and name fields
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -91,14 +91,14 @@ description: "Task list for user-scoped tasks feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Update TaskCreate and TaskUpdate schemas in backend/schemas.py to work with user_id
-- [ ] T022 [US2] Modify TaskService methods to filter by user_id in backend/services/task_service.py
-- [ ] T023 [US2] Update task creation to associate with user in backend/services/task_service.py
-- [ ] T024 [US2] Implement user-specific task listing in backend/routes/tasks.py
-- [ ] T025 [US2] Implement user-specific task creation in backend/routes/tasks.py
-- [ ] T026 [US2] Implement user-specific task updating in backend/routes/tasks.py
-- [ ] T027 [US2] Implement user-specific task deletion in backend/routes/tasks.py
-- [ ] T028 [US2] Add validation to ensure tasks cannot be transferred between users
+- [X] T021 [P] [US2] Update TaskCreate and TaskUpdate schemas in backend/schemas.py to work with user_id
+- [X] T022 [US2] Modify TaskService methods to filter by user_id in backend/services/task_service.py
+- [X] T023 [US2] Update task creation to associate with user in backend/services/task_service.py
+- [X] T024 [US2] Implement user-specific task listing in backend/routes/tasks.py
+- [X] T025 [US2] Implement user-specific task creation in backend/routes/tasks.py
+- [X] T026 [US2] Implement user-specific task updating in backend/routes/tasks.py
+- [X] T027 [US2] Implement user-specific task deletion in backend/routes/tasks.py
+- [X] T028 [US2] Add validation to ensure tasks cannot be transferred between users
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -119,13 +119,13 @@ description: "Task list for user-scoped tasks feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T031 [P] [US3] Update all task endpoints to require user_id in path in backend/routes/tasks.py
-- [ ] T032 [US3] Implement GET /api/{user_id}/tasks endpoint with user filtering
-- [ ] T033 [US3] Implement GET /api/{user_id}/tasks/{task_id} endpoint with user validation
-- [ ] T034 [US3] Implement PATCH /api/{user_id}/tasks/{task_id}/complete endpoint
-- [ ] T035 [US3] Add validation to return 404 when user_id does not exist
-- [ ] T036 [US3] Add validation to ensure users can't access tasks from other users
-- [ ] T037 [US3] Add cascade delete for tasks when user is deleted
+- [X] T031 [P] [US3] Update all task endpoints to require user_id in path in backend/routes/tasks.py
+- [X] T032 [US3] Implement GET /api/{user_id}/tasks endpoint with user filtering
+- [X] T033 [US3] Implement GET /api/{user_id}/tasks/{task_id} endpoint with user validation
+- [X] T034 [US3] Implement PATCH /api/{user_id}/tasks/{task_id}/complete endpoint
+- [X] T035 [US3] Add validation to return 404 when user_id does not exist
+- [X] T036 [US3] Add validation to ensure users can't access tasks from other users
+- [X] T037 [US3] Add cascade delete for tasks when user is deleted
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -141,7 +141,7 @@ description: "Task list for user-scoped tasks feature implementation"
 - [ ] T041 Run quickstart.md validation to ensure all functionality works
 - [ ] T042 Add database constraints to enforce email uniqueness at DB level
 - [ ] T043 Add validation to prevent task transfer between users
-- [ ] T044 Update database session handling to support new User model operations
+- [X] T044 Update database session handling to support new User model operations
 
 ---
 

@@ -1,6 +1,18 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime
+
+class User(SQLModel, table=True):
+    """
+    User model representing a user in the system.
+    """
+    id: Optional[int] = Field(default=None, primary_key=True)
+    email: str = Field(unique=True, min_length=1, max_length=255)  # Email must be unique
+    name: str = Field(min_length=1, max_length=255)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    # Relationship to tasks with cascade delete
+    tasks: list["Task"] = Relationship(back_populates="user", cascade_delete=True)
 
 class Task(SQLModel, table=True):
     """
@@ -12,3 +24,7 @@ class Task(SQLModel, table=True):
     completed: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+    user_id: int = Field(foreign_key="user.id", nullable=False)  # Foreign key to User
+
+    # Relationship to user
+    user: Optional["User"] = Relationship(back_populates="tasks")

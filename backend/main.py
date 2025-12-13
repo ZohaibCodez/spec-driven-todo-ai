@@ -1,7 +1,13 @@
+import sys
+import os
+# Add the current directory to the Python path to allow relative imports
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from database import create_db_and_tables
 
 # Load environment variables
 load_dotenv()
@@ -22,9 +28,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Initialize database tables on startup
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
+
 # Include routes
-from backend.routes import tasks
+from routes import tasks, users
 app.include_router(tasks.router, prefix="/api", tags=["tasks"])
+app.include_router(users.router, prefix="/api", tags=["users"])
 
 # Root endpoint
 @app.get("/")
