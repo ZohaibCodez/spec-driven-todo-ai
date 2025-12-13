@@ -41,7 +41,8 @@
       "Bash(.specify/scripts/bash/check-prerequisites.sh --json --paths-only)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-clarify\" --stage spec --feature \"001-todo-ui\" --json)",
       "SlashCommand(/sp.plan)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-plan\" --stage plan --feature \"001-todo-ui\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-plan\" --stage plan --feature \"001-todo-ui\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"todo-ui-tasks\" --stage tasks --feature \"001-todo-ui\" --json)"
     ]
   }
 }
