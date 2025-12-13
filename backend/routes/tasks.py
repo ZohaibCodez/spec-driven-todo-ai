@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
 from datetime import datetime
-from ..database import get_session
-from ..models import Task
-from .. import schemas
+from backend.database import get_session
+from backend.models import Task
+from backend import schemas
 
 router = APIRouter()
 

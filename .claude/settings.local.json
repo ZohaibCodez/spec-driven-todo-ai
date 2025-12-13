@@ -29,7 +29,11 @@
       "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-tasks\" --stage tasks --feature \"001-backend-api\" --json)",
       "Bash(python validate_setup.py)",
       "Bash(python3 validate_setup.py)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-impl\" --stage tasks --feature \"001-backend-api\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"backend-api-impl\" --stage tasks --feature \"001-backend-api\" --json)",
+      "Bash(uvicorn backend.main:app --reload --port 8000)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(uv run --with fastapi,uvicorn,sqlmodel,python-dotenv,psycopg2-binary --no-project -- python -c \"import sys; print(sys.path)\")"
     ]
   }
 }
