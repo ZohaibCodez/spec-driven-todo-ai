@@ -8,6 +8,16 @@
 ## Overview
 Implement a complete authentication system where users sign up and sign in on the frontend, receive JWT tokens, and the backend validates these tokens to secure all API endpoints and enforce user isolation.
 
+## Clarifications
+
+### Session 2025-12-14
+
+- Q: What password hashing algorithm and parameters should be used? → A: System MUST hash passwords using bcrypt with minimum 12 rounds before storing
+- Q: What observability and logging requirements should be implemented? → A: System MUST log authentication events (success/failure) with appropriate security considerations for PII
+- Q: What should be the JWT token expiration policy? → A: JWT tokens MUST expire after 7 days with optional refresh capability
+- Q: What rate limiting requirements should be implemented for authentication? → A: System MUST implement rate limiting for authentication endpoints (e.g., max 5 attempts per IP per minute)
+- Q: What password complexity requirements should be enforced? → A: System MUST enforce password complexity: minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - User Registration and Authentication (Priority: P1)
@@ -83,12 +93,17 @@ An authenticated user wants to end their session securely and be able to log bac
 - **FR-012**: System MUST reject requests with invalid, expired, or malformed JWT tokens
 - **FR-013**: System MUST display authenticated user information in the application header
 - **FR-014**: System MUST handle token expiration gracefully with appropriate user notifications
-- **FR-015**: System MUST support password validation requirements (minimum 8 characters)
+- **FR-015**: System MUST support password validation requirements (minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character)
+
+### Non-Functional Requirements
+
+- **NFR-001**: System MUST log authentication events (success/failure) with appropriate security considerations for PII
+- **NFR-002**: System MUST implement rate limiting for authentication endpoints (e.g., max 5 attempts per IP per minute)
 
 ### Key Entities
 
-- **User**: Represents a registered user account with email, password, and authentication state
-- **JWT Token**: Represents a secure authentication token containing user identity, expiration time, and cryptographic signature
+- **User**: Represents a registered user account with email, hashed password (using bcrypt with minimum 12 rounds), and authentication state
+- **JWT Token**: Represents a secure authentication token containing user identity, expiration time (7 days with optional refresh capability), and cryptographic signature
 - **Session**: Represents the authenticated state of a user during their interaction with the application
 
 ## Success Criteria *(mandatory)*
@@ -102,6 +117,6 @@ An authenticated user wants to end their session securely and be able to log bac
 - **SC-005**: User session persists across browser refreshes for the duration of the token's validity
 - **SC-006**: 95% of users successfully complete the authentication flow on first attempt
 - **SC-007**: Authentication-related errors are displayed with clear, user-friendly messages
-- **SC-008**: Password validation enforces minimum 8-character requirement with appropriate feedback
+- **SC-008**: Password validation enforces minimum 8-character requirement with complexity (uppercase, lowercase, number, special character) with appropriate feedback
 - **SC-009**: Session logout is processed within 1 second and prevents further API access
 - **SC-010**: System handles concurrent authenticated users without authentication conflicts
