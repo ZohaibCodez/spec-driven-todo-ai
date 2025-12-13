@@ -61,7 +61,8 @@
       "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-spec\" --stage spec --feature \"user-scoped-tasks\" --json)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-spec\" --stage spec --feature \"001-user-scoped-tasks\" --json)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-clarify\" --stage spec --feature \"001-user-scoped-tasks\" --json)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-plan\" --stage plan --feature \"001-user-scoped-tasks\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-plan\" --stage plan --feature \"001-user-scoped-tasks\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"user-scoped-tasks-tasks\" --stage tasks --feature \"001-user-scoped-tasks\" --json)"
     ]
   }
 }
