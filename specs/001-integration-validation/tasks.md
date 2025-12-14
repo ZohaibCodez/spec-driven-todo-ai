@@ -25,11 +25,11 @@ description: "Task list for integration validation and end-to-end testing"
 
 **Purpose**: Project initialization and basic structure for validation
 
-- [ ] T001 Verify backend service is running at http://localhost:8000
-- [ ] T002 Verify frontend service is running at http://localhost:3000
-- [ ] T003 [P] Install validation tools (Postman/Insomnia, database client)
-- [ ] T004 Configure environment variables for integration testing
-- [ ] T005 Set up multiple browser profiles for multi-user testing
+- [X] T001 Verify backend service is running at http://localhost:8000
+- [X] T002 Verify frontend service is running at http://localhost:3000
+- [X] T003 [P] Install validation tools (Postman/Insomnia, database client)
+- [X] T004 Configure environment variables for integration testing
+- [X] T005 Set up multiple browser profiles for multi-user testing
 
 ---
 
@@ -39,13 +39,13 @@ description: "Task list for integration validation and end-to-end testing"
 
 **⚠️ CRITICAL**: No user story validation work can begin until this phase is complete
 
-- [ ] T006 Verify CORS configuration allows frontend origin in backend
-- [ ] T007 [P] Validate BETTER_AUTH_SECRET matches between frontend and backend
-- [ ] T008 [P] Confirm DATABASE_URL is correctly configured and accessible
-- [ ] T009 Verify JWT token validation works on all protected endpoints
-- [ ] T010 Create validation scripts for user isolation testing
-- [ ] T011 Set up database client for direct data verification
-- [ ] T012 Configure API testing tool (Postman/Insomnia) with endpoints
+- [X] T006 Verify CORS configuration allows frontend origin in backend
+- [X] T007 [P] Validate BETTER_AUTH_SECRET matches between frontend and backend
+- [X] T008 [P] Confirm DATABASE_URL is correctly configured and accessible
+- [X] T009 Verify JWT token validation works on all protected endpoints
+- [X] T010 Create validation scripts for user isolation testing
+- [X] T011 Set up database client for direct data verification
+- [X] T012 Configure API testing tool (Postman/Insomnia) with endpoints
 
 **Checkpoint**: Foundation ready - user story validation can now begin
 
@@ -59,19 +59,19 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T013 [P] [US1] Validate Test Case 1: New User Signup Flow steps 1-6
-- [ ] T014 [P] [US1] Verify user record exists in database after signup
-- [ ] T015 [P] [US1] Confirm JWT token is stored in httpOnly cookies
-- [ ] T016 [P] [US1] Verify user is redirected to main application after signup
+- [X] T013 [P] [US1] Validate Test Case 1: New User Signup Flow steps 1-6
+- [X] T014 [P] [US1] Verify user record exists in database after signup
+- [X] T015 [P] [US1] Confirm JWT token is stored in httpOnly cookies
+- [X] T016 [P] [US1] Verify user is redirected to main application after signup
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Execute manual signup flow with valid credentials
-- [ ] T018 [US1] Verify user is created in Neon PostgreSQL database
-- [ ] T019 [US1] Confirm JWT token is issued and stored securely
-- [ ] T020 [US1] Validate redirect to main application occurs correctly
-- [ ] T021 [US1] Test signup with invalid email format and verify error handling
-- [ ] T022 [US1] Document results in integration test report
+- [X] T017 [US1] Execute manual signup flow with valid credentials
+- [X] T018 [US1] Verify user is created in Neon PostgreSQL database
+- [X] T019 [US1] Confirm JWT token is issued and stored securely
+- [X] T020 [US1] Validate redirect to main application occurs correctly
+- [X] T021 [US1] Test signup with invalid email format and verify error handling
+- [X] T022 [US1] Document results in integration test report
 
 **Checkpoint**: At this point, User Story 1 should be fully validated
 
@@ -85,19 +85,19 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T023 [P] [US2] Validate Test Case 2: User Login Flow steps 1-5
-- [ ] T024 [P] [US2] Confirm JWT token is issued after login
-- [ ] T025 [P] [US2] Verify backend accepts the token for protected endpoints
-- [ ] T026 [P] [US2] Validate successful redirect to main application
+- [X] T023 [P] [US2] Validate Test Case 2: User Login Flow steps 1-5
+- [X] T024 [P] [US2] Confirm JWT token is issued after login
+- [X] T025 [P] [US2] Verify backend accepts the token for protected endpoints
+- [X] T026 [P] [US2] Validate successful redirect to main application
 
 ### Implementation for User Story 2
 
-- [ ] T027 [US2] Execute manual login flow with valid credentials
-- [ ] T028 [US2] Verify JWT token is issued and stored securely
-- [ ] T029 [US2] Test backend accepts token for protected endpoints
-- [ ] T030 [US2] Validate redirect to main application occurs correctly
-- [ ] T031 [US2] Test login with invalid credentials and verify error handling
-- [ ] T032 [US2] Document results in integration test report
+- [X] T027 [US2] Execute manual login flow with valid credentials
+- [X] T028 [US2] Verify JWT token is issued and stored securely
+- [X] T029 [US2] Test backend accepts token for protected endpoints
+- [X] T030 [US2] Validate redirect to main application occurs correctly
+- [X] T031 [US2] Test login with invalid credentials and verify error handling
+- [X] T032 [US2] Document results in integration test report
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both be validated
 
@@ -111,19 +111,19 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T033 [P] [US3] Validate Test Case 3: Create Task (Authenticated) steps 1-5
-- [ ] T034 [P] [US3] Validate Test Case 4: View Tasks (User Isolation) steps 1-6
-- [ ] T035 [P] [US3] Verify task is saved with correct user_id in database
-- [ ] T036 [P] [US3] Confirm API filters correctly by user_id
+- [X] T033 [P] [US3] Validate Test Case 3: Create Task (Authenticated) steps 1-5
+- [X] T034 [P] [US3] Validate Test Case 4: View Tasks (User Isolation) steps 1-6
+- [X] T035 [P] [US3] Verify task is saved with correct user_id in database
+- [X] T036 [P] [US3] Confirm API filters correctly by user_id
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Login as User A and create 3 tasks
-- [ ] T038 [US3] Logout and login as User B
-- [ ] T039 [US3] Create 2 tasks for User B
-- [ ] T040 [US3] Verify User B only sees their 2 tasks (not User A's tasks)
-- [ ] T041 [US3] Confirm database shows correct user_id associations
-- [ ] T042 [US3] Document results in integration test report
+- [X] T037 [US3] Login as User A and create 3 tasks
+- [X] T038 [US3] Logout and login as User B
+- [X] T039 [US3] Create 2 tasks for User B
+- [X] T040 [US3] Verify User B only sees their 2 tasks (not User A's tasks)
+- [X] T041 [US3] Confirm database shows correct user_id associations
+- [X] T042 [US3] Document results in integration test report
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 should all be validated
 
@@ -137,19 +137,19 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T043 [P] [US4] Validate Test Case 5: Update Task (Authenticated) steps 1-5
-- [ ] T044 [P] [US4] Validate Test Case 6: Delete Task (Authenticated) steps 1-4
-- [ ] T045 [P] [US4] Validate Test Case 7: Mark Task Complete (Authenticated) steps 1-4
-- [ ] T046 [P] [US4] Verify all CRUD operations work with proper authentication
+- [X] T043 [P] [US4] Validate Test Case 5: Update Task (Authenticated) steps 1-5
+- [X] T044 [P] [US4] Validate Test Case 6: Delete Task (Authenticated) steps 1-4
+- [X] T045 [P] [US4] Validate Test Case 7: Mark Task Complete (Authenticated) steps 1-4
+- [X] T046 [P] [US4] Verify all CRUD operations work with proper authentication
 
 ### Implementation for User Story 4
 
-- [ ] T047 [US4] Create a task and verify it appears in frontend and database
-- [ ] T048 [US4] Update the task and verify changes reflect in both frontend and database
-- [ ] T049 [US4] Delete the task and verify it's removed from both frontend and database
-- [ ] T050 [US4] Mark task as complete and verify status updates in both frontend and database
-- [ ] T051 [US4] Test API returns appropriate status codes (201, 204, etc.)
-- [ ] T052 [US4] Document results in integration test report
+- [X] T047 [US4] Create a task and verify it appears in frontend and database
+- [X] T048 [US4] Update the task and verify changes reflect in both frontend and database
+- [X] T049 [US4] Delete the task and verify it's removed from both frontend and database
+- [X] T050 [US4] Mark task as complete and verify status updates in both frontend and database
+- [X] T051 [US4] Test API returns appropriate status codes (201, 204, etc.)
+- [X] T052 [US4] Document results in integration test report
 
 **Checkpoint**: At this point, all user stories should be validated
 
@@ -163,19 +163,19 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T053 [P] [US5] Validate Test Case 8: Unauthorized Access steps 1-3
-- [ ] T054 [P] [US5] Validate Test Case 9: Token Expiration steps 1-3
-- [ ] T055 [P] [US5] Validate Test Case 10: Cross-User Security steps 1-4
-- [ ] T056 [P] [US5] Verify proper logout functionality and session clearing
+- [X] T053 [P] [US5] Validate Test Case 8: Unauthorized Access steps 1-3
+- [X] T054 [P] [US5] Validate Test Case 9: Token Expiration steps 1-3
+- [X] T055 [P] [US5] Validate Test Case 10: Cross-User Security steps 1-4
+- [X] T056 [P] [US5] Verify proper logout functionality and session clearing
 
 ### Implementation for User Story 5
 
-- [ ] T057 [US5] Test unauthorized access by deleting JWT token and attempting to create task
-- [ ] T058 [US5] Test token expiration and verify proper redirect to login
-- [ ] T059 [US5] Test cross-user security by attempting to access another user's tasks
-- [ ] T060 [US5] Test logout functionality and verify session clearing
-- [ ] T061 [US5] Verify API returns 401/403 for unauthorized access attempts
-- [ ] T062 [US5] Document results in integration test report
+- [X] T057 [US5] Test unauthorized access by deleting JWT token and attempting to create task
+- [X] T058 [US5] Test token expiration and verify proper redirect to login
+- [X] T059 [US5] Test cross-user security by attempting to access another user's tasks
+- [X] T060 [US5] Test logout functionality and verify session clearing
+- [X] T061 [US5] Verify API returns 401/403 for unauthorized access attempts
+- [X] T062 [US5] Document results in integration test report
 
 **Checkpoint**: All user stories should now be validated
 
@@ -187,18 +187,18 @@ description: "Task list for integration validation and end-to-end testing"
 
 ### Tests for Integration Validation ⚠️
 
-- [ ] T063 [P] Verify frontend API client can reach backend endpoints
-- [ ] T064 [P] Confirm CORS is configured correctly for all endpoints
-- [ ] T065 [P] Test that request/response formats match expectations
-- [ ] T066 [P] Validate error handling works across the frontend-backend boundary
+- [X] T063 [P] Verify frontend API client can reach backend endpoints
+- [X] T064 [P] Confirm CORS is configured correctly for all endpoints
+- [X] T065 [P] Test that request/response formats match expectations
+- [X] T066 [P] Validate error handling works across the frontend-backend boundary
 
 ### Implementation for Integration Validation
 
-- [ ] T067 Validate all API endpoints work correctly with frontend requests
-- [ ] T068 Test error handling across the frontend-backend boundary
-- [ ] T069 Verify appropriate error messages are displayed to users
-- [ ] T070 Confirm graceful degradation when errors occur
-- [ ] T071 Document any CORS or communication issues found
+- [X] T067 Validate all API endpoints work correctly with frontend requests
+- [X] T068 Test error handling across the frontend-backend boundary
+- [X] T069 Verify appropriate error messages are displayed to users
+- [X] T070 Confirm graceful degradation when errors occur
+- [X] T071 Document any CORS or communication issues found
 
 **Checkpoint**: All integration points validated
 
@@ -208,14 +208,14 @@ description: "Task list for integration validation and end-to-end testing"
 
 **Purpose**: Final validation and documentation
 
-- [ ] T072 [P] Create complete integration test report documenting all 10 test cases
-- [ ] T073 Update environment variables checklist with validation results
-- [ ] T074 Create known issues log with any bugs found during validation
-- [ ] T075 [P] Verify API contract documentation matches actual implementation
-- [ ] T076 Run all 10 validation test cases again for final verification
-- [ ] T077 Verify performance goals met (API responses < 500ms)
-- [ ] T078 Confirm security requirements met (httpOnly cookies, user isolation)
-- [ ] T079 Validate error handling works properly across all flows
+- [X] T072 [P] Create complete integration test report documenting all 10 test cases
+- [X] T073 Update environment variables checklist with validation results
+- [X] T074 Create known issues log with any bugs found during validation
+- [X] T075 [P] Verify API contract documentation matches actual implementation
+- [X] T076 Run all 10 validation test cases again for final verification
+- [X] T077 Verify performance goals met (API responses < 500ms)
+- [X] T078 Confirm security requirements met (httpOnly cookies, user isolation)
+- [X] T079 Validate error handling works properly across all flows
 
 ---
 
