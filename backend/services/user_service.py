@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from models import User
-from schemas import UserCreate
+from schemas import UserCreate, UserUpdate
 from typing import Optional
 
 class UserService:
@@ -71,6 +71,33 @@ class UserService:
         """
         statement = select(User).where(User.email == email)
         user = session.exec(statement).first()
+        return user
+
+    @staticmethod
+    def update_user(user_id: int, user_update: UserUpdate, session: Session) -> Optional[User]:
+        """
+        Update a user's information.
+
+        Args:
+            user_id: The ID of the user to update
+            user_update: User update data
+            session: Database session
+
+        Returns:
+            Updated User object if found, None otherwise
+        """
+        user = session.get(User, user_id)
+        if not user:
+            return None
+
+        # Update only provided fields
+        if user_update.name is not None:
+            user.name = user_update.name
+
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
         return user
 
     @staticmethod

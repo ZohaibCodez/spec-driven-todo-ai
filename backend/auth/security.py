@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 import re
 from jose import JWTError, jwt
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
@@ -14,9 +15,12 @@ load_dotenv()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # JWT settings
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "4f9c2d8a7e6b1c0f9a3e5b7d8c6a2e1f9b4d7a0c3e8f6b2d1a9c5e7b8a4")
+SECRET_KEY = os.getenv("BETTER_AUTH_SECRET") or os.getenv("JWT_SECRET_KEY", "4f9c2d8a7e6b1c0f9a3e5b7d8c6a2e1f9b4d7a0c3e8f6b2d1a9c5e7b8a4")
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))  # 7 days
+
+# HTTP Bearer security scheme
+security = HTTPBearer()
 
 class TokenData(BaseModel):
     email: Optional[str] = None
@@ -78,3 +82,46 @@ def verify_token(token: str) -> Optional[TokenData]:
         return token_data
     except JWTError:
         return None
+
+
+def verify_bearer_token(credentials: HTTPAuthorizationCredentials = Security(security)) -> TokenData:
+    """
+    Verify JWT token from Authorization header and return token data.
+    Use this as a dependency in route handlers.
+    Raises HTTPException if token is invalid or expired.
+    """
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        
+        email: str = payload.get("email")
+        user_id: int = payload.get("user_id")
+        
+        if email is None or user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token: missing user information",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        return TokenData(email=email, user_id=user_id)
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+def get_current_user_id(token_data: TokenData = Security(verify_bearer_token)) -> int:
+    """
+    Extract user ID from verified JWT token.
+    Use this as a dependency in route handlers to get the authenticated user's ID.
+    """
+    return token_data.user_id

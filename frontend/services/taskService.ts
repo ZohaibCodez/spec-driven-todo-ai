@@ -6,19 +6,30 @@ import {
   TaskFilters,
   SessionData
 } from '@/types/task';
-import { taskApi } from '@/lib/api';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { api } from '@/lib/api';
+import { getSession } from '@/lib/auth-client';
+
+// Helper function to get current user ID from session
+async function getCurrentUserId(): Promise<number> {
+  const session = await getSession();
+  if (!session?.data?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+  return session.data.user.id;
+}
 
 // Task service that manages task operations, including local caching and optimistic updates
 export class TaskService {
   // Get all tasks with optional filters
   static async getTasks(filters?: TaskFilters): Promise<Task[]> {
     try {
-      const response = await taskApi.getTasks(filters);
-      if (response.success && Array.isArray(response.data.tasks)) {
-        return response.data.tasks as Task[];
-      }
-      return [];
+      const userId = await getCurrentUserId();
+      const response = await api.getTasks(userId, {
+        status: filters?.completed === true ? 'completed' : filters?.completed === false ? 'pending' : 'all',
+        sort: filters?.sort,
+        order: filters?.order,
+      });
+      return Array.isArray(response) ? response : [];
     } catch (error) {
       console.error('Error fetching tasks:', error);
       throw error;
@@ -28,11 +39,9 @@ export class TaskService {
   // Get a single task by ID
   static async getTask(id: string): Promise<Task | null> {
     try {
-      const response = await taskApi.getTask(id);
-      if (response.success && response.data) {
-        return response.data as Task;
-      }
-      return null;
+      const userId = await getCurrentUserId();
+      const response = await api.getTask(userId, id);
+      return response || null;
     } catch (error) {
       console.error(`Error fetching task ${id}:`, error);
       throw error;
@@ -42,11 +51,12 @@ export class TaskService {
   // Create a new task
   static async createTask(taskData: CreateTaskRequest): Promise<Task> {
     try {
-      const response = await taskApi.createTask(taskData);
-      if (response.success && response.data) {
-        return response.data as Task;
-      }
-      throw new Error('Failed to create task');
+      const userId = await getCurrentUserId();
+      const response = await api.createTask(userId, {
+        title: taskData.title,
+        description: taskData.description,
+      });
+      return response;
     } catch (error) {
       console.error('Error creating task:', error);
       throw error;
@@ -56,11 +66,9 @@ export class TaskService {
   // Update an existing task
   static async updateTask(id: string, taskData: UpdateTaskRequest): Promise<Task> {
     try {
-      const response = await taskApi.updateTask(id, taskData);
-      if (response.success && response.data) {
-        return response.data as Task;
-      }
-      throw new Error('Failed to update task');
+      const userId = await getCurrentUserId();
+      const response = await api.updateTask(userId, id, taskData);
+      return response;
     } catch (error) {
       console.error(`Error updating task ${id}:`, error);
       throw error;
@@ -70,11 +78,9 @@ export class TaskService {
   // Toggle task completion status
   static async toggleTaskCompletion(id: string, completed: boolean): Promise<Task> {
     try {
-      const response = await taskApi.toggleTaskCompletion(id, completed);
-      if (response.success && response.data) {
-        return response.data as Task;
-      }
-      throw new Error('Failed to toggle task completion');
+      const userId = await getCurrentUserId();
+      const response = await api.toggleTaskComplete(userId, id);
+      return response;
     } catch (error) {
       console.error(`Error toggling task completion ${id}:`, error);
       throw error;
@@ -84,27 +90,11 @@ export class TaskService {
   // Delete a task
   static async deleteTask(id: string): Promise<boolean> {
     try {
-      const response = await taskApi.deleteTask(id);
-      if (response.success && response.data) {
-        return (response.data as any).deleted === true;
-      }
-      return false;
+      const userId = await getCurrentUserId();
+      await api.deleteTask(userId, id);
+      return true;
     } catch (error) {
       console.error(`Error deleting task ${id}:`, error);
-      throw error;
-    }
-  }
-
-  // Export tasks in JSON or CSV format
-  static async exportTasks(format: 'json' | 'csv' = 'json'): Promise<any> {
-    try {
-      const response = await taskApi.exportTasks(format);
-      if (response.success && response.data) {
-        return response.data;
-      }
-      throw new Error(`Failed to export tasks in ${format} format`);
-    } catch (error) {
-      console.error(`Error exporting tasks:`, error);
       throw error;
     }
   }

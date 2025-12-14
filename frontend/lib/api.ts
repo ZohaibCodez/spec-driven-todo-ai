@@ -1,139 +1,87 @@
-import { Task, CreateTaskRequest, UpdateTaskRequest, TaskResponse, TaskErrorResponse, TaskFilters } from '@/types/task';
+import { getSession } from './auth-client';
 
-// Base API URL from environment variables
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-// Function to get or create session ID
-function getSessionId(): string {
-  if (typeof window !== 'undefined') {
-    let sessionId = localStorage.getItem('todo-session-id');
-    if (!sessionId) {
-      sessionId = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString();
-      localStorage.setItem('todo-session-id', sessionId);
-    }
-    return sessionId;
-  }
-  // For server-side rendering, return a placeholder
-  return 'server-side-session';
+interface RequestOptions extends RequestInit {
+  requireAuth?: boolean;
 }
 
-// Generic API request function
-async function apiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const sessionId = getSessionId();
-
-  const config: RequestInit = {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Session-ID': sessionId,
-      ...options.headers,
-    },
-    ...options,
+async function fetchWithAuth(endpoint: string, options: RequestOptions = {}) {
+  const { requireAuth = true, ...fetchOptions } = options;
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
   };
 
-  try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-
-    if (!response.ok) {
-      const errorData: TaskErrorResponse = await response.json();
-      throw new Error(errorData.error.message || `HTTP error! status: ${response.status}`);
+  // Add JWT token if authentication is required
+  if (requireAuth) {
+    const session = await getSession();
+    if (session?.data?.session) {
+      const token = session.data.session.token;
+      headers['Authorization'] = `Bearer ${token}`;
     }
-
-    const data: T = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`API request failed for ${endpoint}:`, error);
-    // If it's a network error (fetch failed), provide a more descriptive error
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      throw new Error(`Network error: Unable to connect to the API server at ${API_BASE_URL}. Please make sure the backend server is running.`);
-    }
-    throw error;
   }
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...fetchOptions,
+    headers: {
+      ...headers,
+      ...(fetchOptions.headers as Record<string, string>),
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Request failed' }));
+    throw new Error(error.detail || `HTTP ${response.status}`);
+  }
+
+  return response.json();
 }
 
-// Task API functions
-export const taskApi = {
-  // Get all tasks with optional filters
-  getTasks: async (filters?: TaskFilters): Promise<TaskResponse> => {
+export const api = {
+  // Task endpoints
+  async getTasks(userId: number, filters?: { status?: string; sort?: string; order?: string }) {
     const params = new URLSearchParams();
-
-    if (filters) {
-      if (filters.completed !== undefined) {
-        params.append('completed', filters.completed.toString());
-      }
-      if (filters.category) {
-        params.append('category', filters.category);
-      }
-      if (filters.tag) {
-        params.append('tag', filters.tag);
-      }
-      if (filters.sort) {
-        params.append('sort', filters.sort);
-      }
-      if (filters.order) {
-        params.append('order', filters.order);
-      }
-    }
-
-    const queryString = params.toString();
-    const endpoint = `/tasks${queryString ? `?${queryString}` : ''}`;
-
-    return apiRequest<TaskResponse>(endpoint);
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.sort) params.append('sort', filters.sort);
+    if (filters?.order) params.append('order', filters.order);
+    
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return fetchWithAuth(`/api/${userId}/tasks${query}`);
   },
 
-  // Get a single task by ID
-  getTask: async (id: string): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>(`/tasks/${id}`);
+  async getTask(userId: number, taskId: string) {
+    return fetchWithAuth(`/api/${userId}/tasks/${taskId}`);
   },
 
-  // Create a new task
-  createTask: async (taskData: CreateTaskRequest): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>('/tasks', {
+  async createTask(userId: number, data: { title: string; description?: string }) {
+    return fetchWithAuth(`/api/${userId}/tasks`, {
       method: 'POST',
-      body: JSON.stringify(taskData),
+      body: JSON.stringify(data),
     });
   },
 
-  // Update an existing task
-  updateTask: async (id: string, taskData: UpdateTaskRequest): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>(`/tasks/${id}`, {
+  async updateTask(userId: number, taskId: string, data: Partial<{ title: string; description?: string; completed: boolean }>) {
+    return fetchWithAuth(`/api/${userId}/tasks/${taskId}`, {
       method: 'PUT',
-      body: JSON.stringify(taskData),
+      body: JSON.stringify(data),
     });
   },
 
-  // Toggle task completion status
-  toggleTaskCompletion: async (id: string, completed: boolean): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>(`/tasks/${id}/complete`, {
-      method: 'PATCH',
-      body: JSON.stringify({ completed }),
-    });
-  },
-
-  // Delete a task
-  deleteTask: async (id: string): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>(`/tasks/${id}`, {
+  async deleteTask(userId: number, taskId: string) {
+    return fetchWithAuth(`/api/${userId}/tasks/${taskId}`, {
       method: 'DELETE',
     });
   },
 
-  // Export tasks in JSON or CSV format
-  exportTasks: async (format: 'json' | 'csv' = 'json'): Promise<TaskResponse> => {
-    return apiRequest<TaskResponse>(`/tasks/export?format=${format}`);
+  async toggleTaskComplete(userId: number, taskId: string) {
+    return fetchWithAuth(`/api/${userId}/tasks/${taskId}/complete`, {
+      method: 'PATCH',
+    });
   },
-};
 
-// Session management functions
-export const sessionApi = {
-  // Get current session ID
-  getSessionId,
-
-  // Clear session data
-  clearSession: (): void => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('todo-session-id');
-    }
+  // User endpoints
+  async getCurrentUser() {
+    return fetchWithAuth('/api/users/me');
   },
 };

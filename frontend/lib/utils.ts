@@ -79,6 +79,22 @@ export function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+// Get initials from a name (for avatars)
+export function getInitials(name: string): string {
+  if (!name) return '?';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase();
+  }
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+// Truncate a string to a specified length
+export function truncate(str: string, length: number): string {
+  if (!str || str.length <= length) return str;
+  return str.substring(0, length) + '...';
+}
+
 // Normalize a string (trim and lowercase) - useful for tags and categories
 export function normalizeString(str: string): string {
   return str.trim().toLowerCase();

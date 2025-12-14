@@ -10,6 +10,9 @@ class UserCreate(UserBase):
     email: str
     name: Optional[str] = None
 
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+
 class UserResponse(UserBase):
     id: int
     created_at: datetime
@@ -21,7 +24,6 @@ class TaskCreate(BaseModel):
     title: str
     description: Optional[str] = None
     completed: bool = False
-    user_id: int  # Required for creating tasks
 
 class TaskUpdate(BaseModel):
     title: Optional[str] = None

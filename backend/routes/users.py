@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from database import get_session
 from models import User
-from schemas import UserCreate, UserResponse
+from schemas import UserCreate, UserUpdate, UserResponse
 from services.user_service import UserService
+from auth.security import get_current_user
 
 router = APIRouter()
 
@@ -27,6 +28,30 @@ def create_user(user_data: UserCreate, session: Session = Depends(get_session)):
         return response
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/users/me", response_model=UserResponse)
+def update_current_user(
+    user_update: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session)
+):
+    """
+    Update the current authenticated user's profile.
+    """
+    updated_user = UserService.update_user(current_user.id, user_update, session)
+    
+    if not updated_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return UserResponse(
+        id=updated_user.id,
+        email=updated_user.email,
+        name=updated_user.name,
+        created_at=updated_user.created_at,
+        updated_at=updated_user.updated_at,
+        email_verified=updated_user.email_verified,
+        is_active=updated_user.is_active
+    )
 
 @router.delete("/users/{user_id}", status_code=204)
 def delete_user(user_id: int, session: Session = Depends(get_session)):
