@@ -6,9 +6,9 @@ from typing import Optional
 from sqlmodel import Session, select
 from datetime import datetime, timedelta
 import logging
-from ..database import get_session
-from ..models import User
-from ..schemas import SignupRequest, SigninRequest, AuthResponse, ErrorResponse
+from database import get_session
+from models import User
+from schemas import SignupRequest, SigninRequest, AuthResponse, ErrorResponse, UserResponse
 from .security import (
     verify_password,
     get_password_hash,
@@ -86,8 +86,19 @@ async def signup(
 
     logger.info(f"Signup successful: {user.email}")
 
+    # Convert User model to UserResponse
+    user_response = UserResponse(
+        id=user.id,
+        email=user.email,
+        name=user.name,
+        created_at=user.created_at,
+        updated_at=user.updated_at,
+        email_verified=user.email_verified,
+        is_active=user.is_active
+    )
+
     return AuthResponse(
-        user=user,
+        user=user_response,
         access_token=access_token,
         token_type="bearer",
         expires_in=7 * 24 * 60 * 60  # 7 days in seconds
@@ -131,8 +142,19 @@ async def signin(
 
         logger.info(f"Signin successful: {user.email}")
 
+        # Convert User model to UserResponse
+        user_response = UserResponse(
+            id=user.id,
+            email=user.email,
+            name=user.name,
+            created_at=user.created_at,
+            updated_at=user.updated_at,
+            email_verified=user.email_verified,
+            is_active=user.is_active
+        )
+
         return AuthResponse(
-            user=user,
+            user=user_response,
             access_token=access_token,
             token_type="bearer",
             expires_in=7 * 24 * 60 * 60  # 7 days in seconds

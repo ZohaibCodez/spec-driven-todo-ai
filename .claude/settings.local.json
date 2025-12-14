@@ -103,7 +103,15 @@
       "Bash(sort -t- -k1,1n)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-system-spec\" --stage \"spec\" --feature \"auth-system\" --json)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-system-spec\" --stage \"spec\" --feature \"002-auth-system\" --json)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-tasks\" --stage \"tasks\" --feature \"002-auth-system\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"auth-tasks\" --stage \"tasks\" --feature \"002-auth-system\" --json)",
+      "Bash(uvicorn main:app --host 0.0.0.0 --port 8000 --reload)",
+      "Bash(source ../.venv/bin/activate)",
+      "Bash(python test_auth_api.py)",
+      "Bash(ls -la *.db)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(python -c \"\nimport sqlite3\nconn = sqlite3.connect(''test.db'')\ncursor = conn.cursor()\ncursor.execute(''SELECT name FROM sqlite_master WHERE type=\"\"table\"\";'')\ntables = cursor.fetchall()\nprint(''Tables in database:'', tables)\nfor table_name in [table[0] for table in tables]:\n    print(f''\\nStructure of table {table_name}:'')\n    cursor.execute(f''PRAGMA table_info({table_name});'')\n    columns = cursor.fetchall()\n    for col in columns:\n        print(f''  {col}'')\nconn.close()\n\")",
+      "Bash(pkill -f uvicorn)",
+      "Bash(cat .env)"
     ]
   }
 }

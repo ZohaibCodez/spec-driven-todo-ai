@@ -41,6 +41,7 @@ class SignupRequest(BaseModel):
     email: str
     password: str  # Must meet complexity requirements (minimum 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character)
     confirm_password: str
+    name: Optional[str] = None
 
 class SigninRequest(BaseModel):
     email: str

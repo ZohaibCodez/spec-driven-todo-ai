@@ -43,8 +43,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    # Allow credentials for JWT cookies if used
-    allow_credentials=True,
 )
 
 # Initialize database tables on startup

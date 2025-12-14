@@ -15,8 +15,8 @@ class User(SQLModel, table=True):
     email_verified: bool = Field(default=False)
     is_active: bool = Field(default=True)
 
-    # Relationship to tasks with cascade delete
-    tasks: list["Task"] = Relationship(back_populates="user", cascade_delete=True)
+    # Relationship to tasks
+    tasks: list["Task"] = Relationship(back_populates="user")
 
 class Task(SQLModel, table=True):
     """
