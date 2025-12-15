@@ -3,11 +3,15 @@ from datetime import datetime, timedelta
 from typing import Optional
 import re
 from jose import JWTError, jwt
-from fastapi import HTTPException, status, Security
+from fastapi import HTTPException, status, Security, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+from database import get_session
+from sqlmodel import Session
+from models import User
+from services.user_service import UserService
 
 load_dotenv()
 
@@ -125,3 +129,19 @@ def get_current_user_id(token_data: TokenData = Security(verify_bearer_token)) -
     Use this as a dependency in route handlers to get the authenticated user's ID.
     """
     return token_data.user_id
+
+
+def get_current_user(token_data: TokenData = Security(verify_bearer_token), session: Session = Depends(get_session)) -> User:
+    """
+    Get the current authenticated user object from the JWT token.
+    Use this as a dependency in route handlers to get the full user object.
+    Raises HTTPException if user is not found.
+    """
+    user = UserService.get_user_by_id(token_data.user_id, session)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user

@@ -93,7 +93,7 @@ export const Navigation: React.FC = () => {
                   className="flex items-center space-x-2 rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
-                    {getInitials(userEmail)}
+                    <User className="w-5 h-5" />
                   </div>
                 </button>
 
