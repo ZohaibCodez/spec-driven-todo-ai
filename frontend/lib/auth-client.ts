@@ -1,53 +1,33 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { createAuthClient } from "better-auth/client";
+import { jwtClient } from "better-auth/client/plugins";
 
-interface AuthResponse {
-  access_token: string;
-  token_type: string;
-  user: {
-    id: number;
-    email: string;
-    name?: string;
-  };
-}
+const authClient = createAuthClient({
+  baseURL: "http://localhost:3000", // Better Auth endpoints are on the frontend server
+  plugins: [
+    jwtClient()
+  ]
+});
 
-interface Session {
-  token: string;
-  user: {
-    id: number;
-    email: string;
-    name?: string;
-  };
-}
-
+// Maintain the same interface as before for compatibility
 export const signUp = async (email: string, password: string, name: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        email, 
-        password, 
-        confirm_password: password, // Backend expects confirm_password
-        name 
-      }),
+    const response = await authClient.signUp.email({
+      email,
+      password,
+      name,
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      return { error: { message: error.detail || 'Signup failed' } };
+    if (response.error) {
+      return { error: { message: response.error.message } };
     }
 
-    const data: AuthResponse = await response.json();
-    
-    // Store token in localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+    // Store token in localStorage (to maintain compatibility)
+    if (typeof window !== 'undefined' && response.data?.session?.token) {
+      localStorage.setItem('auth_token', response.data.session.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
     }
 
-    return { data: { user: data.user, session: { token: data.access_token } } };
+    return { data: response.data };
   } catch (error) {
     return { error: { message: 'Network error during signup' } };
   }
@@ -55,28 +35,22 @@ export const signUp = async (email: string, password: string, name: string) => {
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
+    const response = await authClient.signIn.email({
+      email,
+      password,
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      return { error: { message: error.detail || 'Login failed' } };
+    if (response.error) {
+      return { error: { message: response.error.message } };
     }
 
-    const data: AuthResponse = await response.json();
-    
-    // Store token in localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+    // Store token in localStorage (to maintain compatibility)
+    if (typeof window !== 'undefined' && response.data?.session?.token) {
+      localStorage.setItem('auth_token', response.data.session.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
     }
 
-    return { data: { user: data.user, session: { token: data.access_token } } };
+    return { data: response.data };
   } catch (error) {
     return { error: { message: 'Network error during login' } };
   }

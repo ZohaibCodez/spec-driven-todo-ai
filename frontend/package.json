@@ -9,9 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@better-auth/cli": "^1.4.7",
     "@hookform/resolvers": "^5.2.2",
     "@types/pg": "^8.16.0",
-    "better-auth": "^1.0.7",
+    "better-auth": "^1.4.7",
     "clsx": "^2.1.1",
     "lucide-react": "^0.456.0",
     "next": "16.0.10",

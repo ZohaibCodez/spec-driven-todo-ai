@@ -79,9 +79,17 @@ def verify_token(token: str) -> Optional[TokenData]:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("email")
-        user_id: int = payload.get("user_id")
-        if email is None or user_id is None:
+        user_id: int = payload.get("user_id") or payload.get("sub")  # Better Auth uses 'sub' for user ID
+
+        if email is None and user_id is None:
             return None
+
+        # Convert user_id to int if it's a string
+        if isinstance(user_id, str):
+            user_id = int(user_id)
+        elif isinstance(user_id, float):
+            user_id = int(user_id)
+
         token_data = TokenData(email=email, user_id=user_id)
         return token_data
     except JWTError:
@@ -97,17 +105,23 @@ def verify_bearer_token(credentials: HTTPAuthorizationCredentials = Security(sec
     try:
         token = credentials.credentials
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        
+
         email: str = payload.get("email")
-        user_id: int = payload.get("user_id")
-        
+        user_id: int = payload.get("user_id") or payload.get("sub")  # Better Auth uses 'sub' for user ID
+
         if email is None or user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token: missing user information",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        
+
+        # Convert user_id to int if it's a string
+        if isinstance(user_id, str):
+            user_id = int(user_id)
+        elif isinstance(user_id, float):
+            user_id = int(user_id)
+
         return TokenData(email=email, user_id=user_id)
     except jwt.ExpiredSignatureError:
         raise HTTPException(

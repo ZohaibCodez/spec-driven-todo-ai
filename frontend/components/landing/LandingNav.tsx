@@ -6,14 +6,13 @@ import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { getSession, signOut } from '@/lib/auth-client';
+import { useAuth } from '../../src/context/AuthContext';
 import { User, LogOut, Settings } from 'lucide-react';
 
 export const LandingNav: React.FC = () => {
   const [scrolled, setScrolled] = React.useState(false);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState('');
   const [profileMenuOpen, setProfileMenuOpen] = React.useState(false);
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
@@ -24,22 +23,8 @@ export const LandingNav: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  React.useEffect(() => {
-    const checkAuth = async () => {
-      const session = await getSession();
-      if (session?.data?.session) {
-        setIsAuthenticated(true);
-        setUserEmail(session.data.user?.email || '');
-      } else {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, []);
-
   const handleLogout = async () => {
-    await signOut();
-    setIsAuthenticated(false);
+    await logout(); // Use the logout function from AuthContext
     setProfileMenuOpen(false);
     router.push('/');
   };
@@ -70,25 +55,25 @@ export const LandingNav: React.FC = () => {
           {/* Right Side */}
           <div className="flex items-center space-x-3">
             <ThemeToggle />
-            
-            {isAuthenticated ? (
+
+            {!loading && user ? (
               <div className="flex items-center space-x-3">
                 <Link href="/app">
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300"
                   >
                     Go to Dashboard
                   </Button>
                 </Link>
-                
+
                 <div className="relative">
                   <button
                     onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                     className="flex items-center space-x-2 rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                   >
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
-                      {getInitials(userEmail)}
+                      {getInitials(user.email)}
                     </div>
                   </button>
 
@@ -96,7 +81,7 @@ export const LandingNav: React.FC = () => {
                   {profileMenuOpen && (
                     <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 py-2 animate-scale-in">
                       <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{userEmail}</p>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user.email}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
                       </div>
                       <Link
@@ -136,8 +121,8 @@ export const LandingNav: React.FC = () => {
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300"
                   >
                     Get Started

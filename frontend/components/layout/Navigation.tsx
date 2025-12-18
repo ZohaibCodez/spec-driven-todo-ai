@@ -7,33 +7,21 @@ import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { getSession, signOut } from '@/lib/auth-client';
+import { useAuth } from '../../src/context/AuthContext';
+import { signOut } from '@/lib/auth-client';
 
 export const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = React.useState(false);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState('');
+  const { user, loading, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Check authentication status
-  React.useEffect(() => {
-    const checkAuth = async () => {
-      const session = await getSession();
-      if (session?.data?.session) {
-        setIsAuthenticated(true);
-        setUserEmail(session.data.user?.email || '');
-      } else {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, [pathname]);
+  // No need for separate effect - we're using the AuthContext
+  const isAuthenticated = !loading && !!user;
 
   const handleLogout = async () => {
-    await signOut();
-    setIsAuthenticated(false);
+    await logout(); // Use the logout function from AuthContext
     setProfileMenuOpen(false);
     router.push('/login');
   };
@@ -101,7 +89,7 @@ export const Navigation: React.FC = () => {
                 {profileMenuOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 py-2 animate-scale-in">
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{userEmail}</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user?.email || user?.name || ''}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Manage your account</p>
                     </div>
                     <Link
@@ -189,7 +177,7 @@ export const Navigation: React.FC = () => {
                 ))}
                 <div className="pt-3 mt-3 border-t border-gray-200 dark:border-gray-800 space-y-1">
                   <div className="px-3 py-2">
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{userEmail}</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user?.email || user?.name || ''}</p>
                   </div>
                   <Link
                     href="/app/profile"

@@ -159,7 +159,14 @@ spec-driven-todo-ai/
 │   ├── models.py        # SQLModel database models
 │   ├── schemas.py       # Pydantic request/response schemas
 │   ├── database.py      # Database connection and setup
+│   ├── auth/            # Authentication security and middleware
 │   └── routes/          # API route handlers
+├── frontend/            # Next.js frontend application
+│   ├── app/            # App Router pages
+│   ├── lib/            # Utilities and auth configuration
+│   │   ├── auth.ts     # Better Auth server configuration
+│   │   └── auth-client.ts # Better Auth client
+│   └── components/     # React components
 ├── src/                 # CLI application source
 │   ├── cli/            # Command-line interface
 │   ├── models/         # Data models
@@ -195,8 +202,17 @@ This project follows a rigorous **spec-first** approach:
 ### Key Documents
 - 📖 [CLI Application Spec](specs/001-cli-todo-app/spec.md)
 - 📖 [Backend API Spec](specs/001-backend-api/spec.md)
+- 📖 [Authentication System Spec](specs/002-auth-system/spec.md)
 - 📖 [Constitution](specs/constitution.md)
 - 📖 [API Contract](specs/001-backend-api/contracts/task-api.openapi.yaml)
+
+### 🔐 Authentication System
+The application now uses **Better Auth** for authentication with JWT tokens that are compatible with the FastAPI backend. This provides:
+- Secure user registration and login
+- JWT token-based API authentication
+- User isolation for data security
+- Support for future social login integration
+- Seamless integration with both frontend and backend systems
 
 ## 🧪 Testing
 

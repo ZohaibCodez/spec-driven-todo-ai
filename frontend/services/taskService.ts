@@ -11,11 +11,32 @@ import { getSession } from '@/lib/auth-client';
 
 // Helper function to get current user ID from session
 async function getCurrentUserId(): Promise<number> {
-  const session = await getSession();
-  if (!session?.data?.user?.id) {
+  // First try to get from localStorage (faster for immediate access after auth)
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  if (!token) {
     throw new Error('User not authenticated');
   }
-  return session.data.user.id;
+
+  // Try to parse user data from localStorage first (immediate availability)
+  const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+  if (userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      if (user.id) {
+        return typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
+      }
+    } catch (e) {
+      console.error('Error parsing user data from localStorage:', e);
+    }
+  }
+
+  // Fallback to Better Auth session if localStorage doesn't have user data
+  const session = await getSession();
+  if (session?.data?.user?.id) {
+    return typeof session.data.user.id === 'string' ? parseInt(session.data.user.id, 10) : session.data.user.id;
+  }
+
+  throw new Error('User not authenticated');
 }
 
 // Task service that manages task operations, including local caching and optimistic updates

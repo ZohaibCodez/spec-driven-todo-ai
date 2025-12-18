@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function UserMenu() {
@@ -9,15 +9,6 @@ export default function UserMenu() {
 
   const handleLogout = async () => {
     try {
-      // Call the logout API endpoint to properly handle logout
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
       // Clear the token and update state
       await logout();
       router.push('/signin');

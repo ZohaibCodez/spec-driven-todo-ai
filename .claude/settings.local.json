@@ -116,7 +116,10 @@
       "Bash(git push origin 002-auth-system)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"integration-validation-spec\" --stage spec --feature integration-validation --json)",
       "Bash(.specify/scripts/bash/create-phr.sh --title \"integration-validation-tasks\" --stage tasks --feature 001-integration-validation --json)",
-      "Bash(curl -s http://localhost:3000)"
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(python -c \"from main import app; print([route.path for route in app.routes])\")",
+      "Bash(npm install pg @types/pg)",
+      "Bash(python -c \"\nimport os\nfrom dotenv import load_dotenv\nfrom database import engine\nfrom sqlalchemy import inspect\n\nload_dotenv()\ninspector = inspect(engine)\ntables = inspector.get_table_names()\nprint(''Existing tables:'', tables)\n\")"
     ]
   }
 }

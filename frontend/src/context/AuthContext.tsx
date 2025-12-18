@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { getSession, signIn as signInClient, signUp as signUpClient } from '@/lib/auth-client';
 
 interface User {
   id: number;
@@ -33,37 +34,66 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check for existing token in localStorage on initial load
-    const storedToken = localStorage.getItem('access_token');
+    const storedToken = localStorage.getItem('auth_token');
     if (storedToken) {
-      setToken(storedToken);
-      // In a real app, you might want to validate the token with an API call
-      // For now, we'll assume the token is valid
+      // Verify the session and get user data
+      const checkSession = async () => {
+        const sessionData = await getSession();
+        if (sessionData.data) {
+          // Convert Better Auth user format to our expected format
+          const betterAuthUser = sessionData.data.user;
+          const betterAuthSession = sessionData.data.session;
+
+          // Map Better Auth user to our User interface
+          const mappedUser: User = {
+            id: betterAuthUser.id as number,
+            email: betterAuthUser.email,
+            name: betterAuthUser.name || null,
+            created_at: betterAuthUser.createdAt || new Date().toISOString(),
+            updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+            email_verified: betterAuthUser.emailVerified || false,
+            is_active: true, // Better Auth doesn't have this field, assume active
+          };
+
+          setUser(mappedUser);
+          setToken(betterAuthSession.token);
+        }
+      };
+      checkSession();
     }
     setLoading(false);
   }, []);
 
   const signin = async (email: string, password: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/auth/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const result = await signInClient(email, password);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Signin failed');
+      if (result.error) {
+        throw new Error(result.error.message || 'Signin failed');
       }
 
-      const data = await response.json();
-      const { user: userData, access_token } = data;
+      if (result.data) {
+        // Convert Better Auth user format to our expected format
+        const betterAuthUser = result.data.user;
+        const betterAuthSession = result.data.session;
 
-      localStorage.setItem('access_token', access_token);
-      setToken(access_token);
-      setUser(userData);
+        // Map Better Auth user to our User interface
+        const mappedUser: User = {
+          id: betterAuthUser.id as number,
+          email: betterAuthUser.email,
+          name: betterAuthUser.name || null,
+          created_at: betterAuthUser.createdAt || new Date().toISOString(),
+          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+          email_verified: betterAuthUser.emailVerified || false,
+          is_active: true, // Better Auth doesn't have this field, assume active
+        };
 
+        setToken(betterAuthSession.token);
+        setUser(mappedUser);
+      }
+
+      // Wait for the state to update before navigating
+      await new Promise(resolve => setTimeout(resolve, 100));
       router.push('/');
       router.refresh();
     } catch (error) {
@@ -74,26 +104,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string, confirmPassword: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, confirm_password: confirmPassword }),
-      });
+      // Use name from email if no name provided (Better Auth requires a name)
+      const name = email.split('@')[0];
+      const result = await signUpClient(email, password, name);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Signup failed');
+      if (result.error) {
+        throw new Error(result.error.message || 'Signup failed');
       }
 
-      const data = await response.json();
-      const { user: userData, access_token } = data;
+      if (result.data) {
+        // Convert Better Auth user format to our expected format
+        const betterAuthUser = result.data.user;
+        const betterAuthSession = result.data.session;
 
-      localStorage.setItem('access_token', access_token);
-      setToken(access_token);
-      setUser(userData);
+        // Map Better Auth user to our User interface
+        const mappedUser: User = {
+          id: betterAuthUser.id as number,
+          email: betterAuthUser.email,
+          name: betterAuthUser.name || null,
+          created_at: betterAuthUser.createdAt || new Date().toISOString(),
+          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+          email_verified: betterAuthUser.emailVerified || false,
+          is_active: true, // Better Auth doesn't have this field, assume active
+        };
 
+        setToken(betterAuthSession.token);
+        setUser(mappedUser);
+      }
+
+      // Wait for the state to update before navigating
+      await new Promise(resolve => setTimeout(resolve, 100));
       router.push('/');
       router.refresh();
     } catch (error) {
@@ -103,7 +143,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('access_token');
+    // Use the auth client to logout
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
     setToken(null);
     setUser(null);
     router.push('/signin');

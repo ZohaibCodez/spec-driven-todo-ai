@@ -15,10 +15,22 @@ async function fetchWithAuth(endpoint: string, options: RequestOptions = {}) {
 
   // Add JWT token if authentication is required
   if (requireAuth) {
+    let token = null;
+
+    // Try to get token from Better Auth session first
     const session = await getSession();
-    if (session?.data?.session) {
-      const token = session.data.session.token;
+    if (session?.data?.session?.token) {
+      token = session.data.session.token;
+    } else {
+      // Fallback to localStorage
+      token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    }
+
+    if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      // If no token is available but auth is required, throw an error
+      throw new Error('User not authenticated');
     }
   }
 

@@ -30,9 +30,7 @@ def on_startup():
 
 # Include routes
 from routes import tasks, users
-from auth import routes as auth_routes
 
-app.include_router(auth_routes.router, tags=["authentication"])
 app.include_router(tasks.router, prefix="/api", tags=["tasks"])
 app.include_router(users.router, prefix="/api", tags=["users"])
 
