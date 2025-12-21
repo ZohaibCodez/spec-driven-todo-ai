@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
 
-# Create FastAPI app instance
+# Create FastAPI app instance  
 app = FastAPI(
     title="Task Management API",
     description="API for managing tasks with CRUD operations",
@@ -34,6 +33,3 @@ def health_check():
 @app.get("/api/test")
 def test_endpoint():
     return {"test": "success", "platform": "vercel"}
-
-# Wrap the FastAPI app with Mangum for AWS Lambda/Vercel compatibility
-handler = Mangum(app)
