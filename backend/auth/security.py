@@ -1,4 +1,4 @@
-from passlib.context import CryptContext
+import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional
 import re
@@ -15,9 +15,6 @@ from backend.services.user_service import UserService
 
 load_dotenv()
 
-# Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 # JWT settings
 SECRET_KEY = os.getenv("BETTER_AUTH_SECRET") or os.getenv("JWT_SECRET_KEY", "4f9c2d8a7e6b1c0f9a3e5b7d8c6a2e1f9b4d7a0c3e8f6b2d1a9c5e7b8a4")
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
@@ -32,11 +29,12 @@ class TokenData(BaseModel):
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password using bcrypt."""
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def get_password_hash(password: str) -> str:
     """Hash a password using bcrypt with 12 rounds."""
-    return pwd_context.hash(password, rounds=12)
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 def validate_password_strength(password: str) -> tuple[bool, str]:
     """
