@@ -1,8 +1,13 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { getSession, signIn as signInClient, signUp as signUpClient } from '@/lib/auth-client';
+import { createAuthClient } from "better-auth/client";
+
+const authClient = createAuthClient({
+  baseURL: "http://localhost:3000",
+});
 
 interface User {
   id: number;
@@ -22,6 +27,7 @@ interface AuthContextType {
   signup: (email: string, password: string, confirmPassword: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: () => boolean;
+  refreshSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,38 +37,66 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
-  useEffect(() => {
-    // Check for existing token in localStorage on initial load
-    const storedToken = localStorage.getItem('auth_token');
-    if (storedToken) {
-      // Verify the session and get user data
-      const checkSession = async () => {
-        const sessionData = await getSession();
-        if (sessionData.data) {
-          // Convert Better Auth user format to our expected format
-          const betterAuthUser = sessionData.data.user;
-          const betterAuthSession = sessionData.data.session;
+  // Function to check Better Auth session
+  const checkBetterAuthSession = async () => {
+    try {
+      // Use Better Auth client to get session
+      const session = await authClient.getSession();
+      
+      if (session.data?.user) {
+        const betterAuthUser = session.data.user;
+        const betterAuthSession = session.data.session;
 
-          // Map Better Auth user to our User interface
-          const mappedUser: User = {
-            id: betterAuthUser.id as number,
-            email: betterAuthUser.email,
-            name: betterAuthUser.name || null,
-            created_at: betterAuthUser.createdAt || new Date().toISOString(),
-            updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
-            email_verified: betterAuthUser.emailVerified || false,
-            is_active: true, // Better Auth doesn't have this field, assume active
-          };
+        // Map Better Auth user to our User interface
+        const mappedUser: User = {
+          id: betterAuthUser.id as number,
+          email: betterAuthUser.email,
+          name: betterAuthUser.name || null,
+          created_at: betterAuthUser.createdAt || new Date().toISOString(),
+          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+          email_verified: betterAuthUser.emailVerified || false,
+          is_active: true,
+        };
 
-          setUser(mappedUser);
+        // Store in localStorage for backward compatibility
+        if (betterAuthSession?.token) {
+          localStorage.setItem('auth_token', betterAuthSession.token);
+          localStorage.setItem('user', JSON.stringify(mappedUser));
           setToken(betterAuthSession.token);
         }
-      };
-      checkSession();
+        
+        setUser(mappedUser);
+        return true;
+      } else {
+        // No session found, clear localStorage
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
+        setUser(null);
+        setToken(null);
+        return false;
+      }
+    } catch (error) {
+      console.error('Session check error:', error);
+      return false;
     }
-    setLoading(false);
-  }, []);
+  };
+
+  // Check session on mount and when pathname changes
+  useEffect(() => {
+    const initializeAuth = async () => {
+      setLoading(true);
+      await checkBetterAuthSession();
+      setLoading(false);
+    };
+
+    initializeAuth();
+  }, [pathname]); // Re-check when pathname changes (after OAuth redirect)
+
+  const refreshSession = async () => {
+    await checkBetterAuthSession();
+  };
 
   const signin = async (email: string, password: string) => {
     try {
@@ -76,6 +110,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Convert Better Auth user format to our expected format
         const betterAuthUser = result.data.user;
         const betterAuthSession = result.data.session;
+
+        // Check if session exists before accessing token
+        if (!betterAuthSession) {
+          throw new Error('Authentication session not found');
+        }
 
         // Map Better Auth user to our User interface
         const mappedUser: User = {
@@ -113,23 +152,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (result.data) {
-        // Convert Better Auth user format to our expected format
-        const betterAuthUser = result.data.user;
-        const betterAuthSession = result.data.session;
-
-        // Map Better Auth user to our User interface
-        const mappedUser: User = {
-          id: betterAuthUser.id as number,
-          email: betterAuthUser.email,
-          name: betterAuthUser.name || null,
-          created_at: betterAuthUser.createdAt || new Date().toISOString(),
-          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
-          email_verified: betterAuthUser.emailVerified || false,
-          is_active: true, // Better Auth doesn't have this field, assume active
-        };
-
-        setToken(betterAuthSession.token);
-        setUser(mappedUser);
+        // For email verification flow, redirect to verification page
+        // Don't set user/token yet as they need to verify email first
+        router.push('/verify-email');
+        return;
       }
 
       // Wait for the state to update before navigating
@@ -142,14 +168,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const logout = () => {
-    // Use the auth client to logout
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user');
-    setToken(null);
-    setUser(null);
-    router.push('/signin');
-    router.refresh();
+  const logout = async () => {
+    try {
+      // Use Better Auth client to sign out
+      await authClient.signOut();
+      
+      // Clear local storage
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      
+      // Clear state
+      setToken(null);
+      setUser(null);
+      
+      // Redirect to login
+      router.push('/login');
+      router.refresh();
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if signOut fails, clear local state
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+      router.push('/login');
+    }
   };
 
   const isAuthenticated = () => {
@@ -164,6 +207,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signup,
     logout,
     isAuthenticated,
+    refreshSession,
   };
 
   return (

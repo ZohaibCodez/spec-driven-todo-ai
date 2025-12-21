@@ -1,0 +1,47 @@
+import { betterAuth } from "better-auth";
+import { jwt } from "better-auth/plugins";
+import { Pool } from "pg";
+
+// Use the same database connection as your backend with Neon-compatible settings
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Required for Neon connections
+  },
+  // Additional settings for Neon compatibility
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 30000,
+  max: 20, // Maximum number of clients in the pool
+});
+
+export const auth = betterAuth({
+  database: pool,
+  secret: process.env.BETTER_AUTH_SECRET!,
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
+  trustedOrigins: ["http://localhost:3000"],
+  // Use custom table names to avoid conflicts with existing tables
+  user: {
+    modelName: "better_auth_user",
+  },
+  session: {
+    modelName: "better_auth_session",
+    expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
+  },
+  account: {
+    modelName: "better_auth_account",
+  },
+  verification: {
+    modelName: "better_auth_verification",
+  },
+  // Keep the same JWT settings as your current system
+  plugins: [
+    jwt({
+      algorithm: "HS256",
+      expiresIn: "7d", // Same as your current 7-day expiration
+    })
+  ],
+});

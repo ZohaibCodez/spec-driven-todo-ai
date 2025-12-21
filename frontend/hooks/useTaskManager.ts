@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Task, CreateTaskRequest, UpdateTaskRequest, TaskFilters } from '@/types/task';
 import { TaskService } from '@/services/taskService';
 import { useAnonymousSession } from './useLocalStorage';
+import { useAuth } from '../src/context/AuthContext';
 
 export function useTaskManager() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -9,6 +10,7 @@ export function useTaskManager() {
   const [error, setError] = useState<string | null>(null);
   const [sessionId] = useAnonymousSession();
   const [recentlyDeleted, setRecentlyDeleted] = useState<{task: Task, timeoutId: NodeJS.Timeout} | null>(null);
+  const { user, loading: authLoading } = useAuth();
 
   // Load tasks from the API
   const loadTasks = async () => {
@@ -32,13 +34,23 @@ export function useTaskManager() {
     }
   };
 
-  // Initialize tasks when the hook is first used
+  // Initialize tasks when the hook is first used and user is authenticated
   useEffect(() => {
-    loadTasks();
-  }, []);
+    if (!authLoading && user) {
+      loadTasks();
+    } else if (!authLoading && !user) {
+      // If user is not authenticated, set empty tasks
+      setTasks([]);
+      setLoading(false);
+    }
+  }, [user, authLoading]);
 
   // Create a new task
   const createTask = async (taskData: CreateTaskRequest) => {
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
     try {
       // Optimistic update: add the task to the UI immediately
       const newTask: Task = {
@@ -73,6 +85,10 @@ export function useTaskManager() {
 
   // Update an existing task
   const updateTask = async (id: string, taskData: UpdateTaskRequest) => {
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
     try {
       // Optimistic update: update the task in the UI immediately
       setTasks(prev =>
@@ -104,6 +120,10 @@ export function useTaskManager() {
 
   // Toggle task completion status
   const toggleTaskCompletion = async (id: string) => {
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
     try {
       // Find the current task to get its completion status
       const currentTask = tasks.find(t => t.id === id);
@@ -141,6 +161,10 @@ export function useTaskManager() {
 
   // Delete a task with undo functionality
   const deleteTask = async (id: string) => {
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
     // Find the task to be deleted for potential undo
     const taskToDelete = tasks.find(t => t.id === id);
     if (!taskToDelete) {

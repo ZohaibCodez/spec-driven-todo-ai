@@ -21,13 +21,23 @@ export const signUp = async (email: string, password: string, name: string) => {
       return { error: { message: response.error.message } };
     }
 
+    // Better Auth returns { token, user } directly
+    const token = response.data?.token;
+    const user = response.data?.user;
+
     // Store token in localStorage (to maintain compatibility)
-    if (typeof window !== 'undefined' && response.data?.session?.token) {
-      localStorage.setItem('auth_token', response.data.session.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    if (typeof window !== 'undefined' && token && user) {
+      localStorage.setItem('auth_token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     }
 
-    return { data: response.data };
+    // Return in expected format with session object
+    return { 
+      data: {
+        session: { token: token || '' },
+        user: user
+      }
+    };
   } catch (error) {
     return { error: { message: 'Network error during signup' } };
   }
@@ -44,13 +54,23 @@ export const signIn = async (email: string, password: string) => {
       return { error: { message: response.error.message } };
     }
 
+    // Better Auth returns { token, user } directly
+    const token = response.data?.token;
+    const user = response.data?.user;
+
     // Store token in localStorage (to maintain compatibility)
-    if (typeof window !== 'undefined' && response.data?.session?.token) {
-      localStorage.setItem('auth_token', response.data.session.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    if (typeof window !== 'undefined' && token && user) {
+      localStorage.setItem('auth_token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     }
 
-    return { data: response.data };
+    // Return in expected format with session object
+    return { 
+      data: {
+        session: { token: token || '' },
+        user: user
+      }
+    };
   } catch (error) {
     return { error: { message: 'Network error during login' } };
   }
