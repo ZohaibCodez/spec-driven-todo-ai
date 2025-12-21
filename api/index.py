@@ -1,11 +1,12 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-from backend.database import create_db_and_tables
+import sys
 import os
 
-# Load environment variables
-load_dotenv()
+# Add backend directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from backend.database import create_db_and_tables
 
 # Create FastAPI app instance
 app = FastAPI(
@@ -14,7 +15,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware - single configuration only
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # In production, replace with specific origins
@@ -48,3 +49,6 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+# For Vercel
+handler = app
