@@ -1,4 +1,6 @@
-import bcrypt
+import hashlib
+import secrets
+import base64
 from datetime import datetime, timedelta
 from typing import Optional
 import re
@@ -28,13 +30,36 @@ class TokenData(BaseModel):
     user_id: Optional[int] = None
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a plain password against a hashed password using bcrypt."""
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    """Verify a plain password against a hashed password using PBKDF2."""
+    try:
+        # Extract salt and hash from stored password
+        parts = hashed_password.split('$')
+        if len(parts) != 2:
+            return False
+        salt = base64.b64decode(parts[0])
+        stored_hash = parts[1]
+        
+        # Hash the plain password with the same salt
+        key = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt, 100000)
+        new_hash = base64.b64encode(key).decode('utf-8')
+        
+        return secrets.compare_digest(new_hash, stored_hash)
+    except Exception:
+        return False
 
 def get_password_hash(password: str) -> str:
-    """Hash a password using bcrypt with 12 rounds."""
-    salt = bcrypt.gensalt(rounds=12)
-    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+    """Hash a password using PBKDF2 with SHA256."""
+    # Generate a random salt
+    salt = secrets.token_bytes(32)
+    
+    # Hash the password with PBKDF2
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    
+    # Store salt and hash together (salt$hash format)
+    salt_b64 = base64.b64encode(salt).decode('utf-8')
+    hash_b64 = base64.b64encode(key).decode('utf-8')
+    
+    return f"{salt_b64}${hash_b64}"
 
 def validate_password_strength(password: str) -> tuple[bool, str]:
     """
