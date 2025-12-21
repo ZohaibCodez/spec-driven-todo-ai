@@ -4,7 +4,7 @@ import base64
 from datetime import datetime, timedelta
 from typing import Optional
 import re
-from jose import JWTError, jwt
+import jwt
 from fastapi import HTTPException, status, Security, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
@@ -115,7 +115,7 @@ def verify_token(token: str) -> Optional[TokenData]:
 
         token_data = TokenData(email=email, user_id=user_id)
         return token_data
-    except JWTError:
+    except jwt.InvalidTokenError:
         return None
 
 
