@@ -1,5 +1,6 @@
 import sys
 import os
+import traceback
 
 # Add backend directory to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -7,14 +8,17 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+FULL_BACKEND = False
+IMPORT_ERROR = None
+
 try:
     from backend.database import create_db_and_tables
     from backend.routes import tasks, users
     from backend.auth import routes as auth_routes
     FULL_BACKEND = True
-except ImportError as e:
-    print(f"Warning: Could not import backend modules: {e}")
-    FULL_BACKEND = False
+except Exception as e:
+    IMPORT_ERROR = f"{type(e).__name__}: {str(e)}\n{traceback.format_exc()}"
+    print(f"Error importing backend modules: {IMPORT_ERROR}")
 
 # Create FastAPI app instance  
 app = FastAPI(
@@ -49,13 +53,16 @@ if FULL_BACKEND:
 
 @app.get("/")
 def read_root():
-    return {
+    response = {
         "message": "Task Management API",
         "version": "1.0.0",
         "status": "online",
         "full_backend": FULL_BACKEND,
         "docs": "/docs"
     }
+    if IMPORT_ERROR:
+        response["import_error"] = IMPORT_ERROR
+    return response
 
 @app.get("/health")
 def health_check():
