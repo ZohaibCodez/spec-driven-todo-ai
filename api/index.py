@@ -39,8 +39,8 @@ app.add_middleware(
 # Include routers if backend is available
 if FULL_BACKEND:
     try:
-        app.include_router(tasks.router, prefix="/api/tasks", tags=["Tasks"])
-        app.include_router(users.router, prefix="/api/users", tags=["Users"])
+        app.include_router(tasks.router, prefix="/api", tags=["Tasks"])
+        app.include_router(users.router, prefix="/api", tags=["Users"])
         app.include_router(auth_routes.router, prefix="/api/auth", tags=["Authentication"])
         
         # Startup event to create tables
