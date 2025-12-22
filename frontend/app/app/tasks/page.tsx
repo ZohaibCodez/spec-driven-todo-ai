@@ -48,7 +48,7 @@ export default function TasksPage() {
       await createTask({
         title: taskData.title || '',
         description: taskData.description,
-        category: taskData.category,
+        category: taskData.category || undefined,
         tags: taskData.tags,
         completed: false,
       });
