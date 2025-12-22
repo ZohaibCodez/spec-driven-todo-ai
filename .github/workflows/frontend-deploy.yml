@@ -1,4 +1,7 @@
-name: Frontend CI/CD
+name: Frontend CI (Tests Only)
+
+# Note: Deployment is handled by Vercel
+# This workflow only runs tests and linting
 
 on:
   push:
@@ -16,12 +19,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   test:
@@ -55,41 +52,4 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npm run build
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Deploy to GitHub Pages
-        working-directory: ./frontend
-        env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-          BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          npm ci
-          npm run build
-          touch out/.nojekyll
-          
-      - name: Upload artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./frontend/out
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  # Deployment is handled by Vercel - no deployment job needed here

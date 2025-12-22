@@ -3,14 +3,17 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // Note: Removed 'output: export' because Better Auth requires API routes (server-side)
-  // Deploy to Vercel, Netlify, or similar platforms that support Next.js API routes
-  basePath: process.env.NODE_ENV === 'production' ? '/spec-driven-todo-ai' : '',
+  // Deploy to Vercel - supports Next.js API routes for Better Auth
   experimental: {
     // serverActions is now enabled by default in Next.js 16, so no need to explicitly set it
   },
   images: {
     unoptimized: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.vercel.app',
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
