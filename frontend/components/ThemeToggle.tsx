@@ -10,7 +10,9 @@ export function ThemeToggle() {
 
   // Mark as mounted after client-side hydration
   useEffect(() => {
-    setMounted(true);
+    // Use setTimeout to avoid synchronous setState in effect
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) {

@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CheckCircle2, Mail, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -14,13 +13,7 @@ export default function VerifyEmailPage() {
   const [message, setMessage] = React.useState('');
   const token = searchParams.get('token');
 
-  React.useEffect(() => {
-    if (token) {
-      verifyEmail(token);
-    }
-  }, [token]);
-
-  const verifyEmail = async (verificationToken: string) => {
+  const verifyEmail = React.useCallback(async (verificationToken: string) => {
     setStatus('loading');
     try {
       const response = await fetch(`/api/auth/verify-email`, {
@@ -47,7 +40,13 @@ export default function VerifyEmailPage() {
       setStatus('error');
       setMessage('An error occurred while verifying your email. Please try again.');
     }
-  };
+  }, [router]);
+
+  React.useEffect(() => {
+    if (token) {
+      verifyEmail(token);
+    }
+  }, [token, verifyEmail]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-indigo-950/50 dark:to-purple-950/50">

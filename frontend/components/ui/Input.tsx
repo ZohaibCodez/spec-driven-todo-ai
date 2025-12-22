@@ -9,7 +9,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, label, error, floatingLabel = true, id, ...props }, ref) => {
-    const inputId = id || `input-${React.useId()}`;
+    const generatedId = React.useId();
+    const inputId = id || `input-${generatedId}`;
     const [isFocused, setIsFocused] = React.useState(false);
     const [hasValue, setHasValue] = React.useState(!!props.value || !!props.defaultValue);
 

@@ -8,7 +8,6 @@ import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '../../src/context/AuthContext';
-import { signOut } from '@/lib/auth-client';
 
 export const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
