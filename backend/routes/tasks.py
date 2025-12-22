@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlmodel import Session, select
 from typing import List, Optional
 from datetime import datetime
-from backend.database import get_session
-from backend.models import Task, User
-from backend.auth.security import get_current_user_id
-import backend.schemas as schemas
+from database import get_session
+from models import Task, User
+from auth.security import get_current_user_id
+import schemas
 
 router = APIRouter()
 

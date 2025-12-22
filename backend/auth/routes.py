@@ -6,10 +6,10 @@ from typing import Optional
 from sqlmodel import Session, select
 from datetime import datetime, timedelta
 import logging
-from backend.database import get_session
-from backend.models import User
-from backend.schemas import SignupRequest, SigninRequest, AuthResponse, ErrorResponse, UserResponse
-from backend.auth.security import (
+from database import get_session
+from models import User
+from schemas import SignupRequest, SigninRequest, AuthResponse, ErrorResponse, UserResponse
+from auth.security import (
     verify_password,
     get_password_hash,
     validate_password_strength,

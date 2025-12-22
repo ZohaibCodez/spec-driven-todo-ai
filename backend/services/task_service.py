@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from backend.models import Task, User
-from backend.schemas import TaskCreate, TaskUpdate
+from models import Task, User
+from schemas import TaskCreate, TaskUpdate
 from typing import Optional, List
 
 class TaskService:
