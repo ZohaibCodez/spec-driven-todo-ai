@@ -1,13 +1,12 @@
 import { auth } from "@/lib/auth";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 export async function GET(request: NextRequest) {
   try {
-    // Get the Better Auth session
+    // Get the Better Auth session from request headers
     const session = await auth.api.getSession({
-      headers: await cookies()
+      headers: request.headers
     });
 
     if (!session?.user) {
