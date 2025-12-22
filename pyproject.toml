@@ -3,7 +3,7 @@ name = "cli-todo-app"
 version = "0.1.0"
 description = "A command-line todo application"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -11,13 +11,21 @@ classifiers = [
 ]
 dependencies = [
     "alembic>=1.17.2",
+    "bcrypt==4.0.1",
     "dotenv>=0.9.9",
-    "fastapi>=0.124.4",
-    "psycopg2-binary>=2.9.11",
-    "requests>=2.32.5",
-    "slowapi>=0.1.9",
-    "sqlmodel>=0.0.27",
-    "uvicorn>=0.38.0",
+    "fastapi==0.104.1",
+    "passlib[bcrypt]==1.7.4",
+    "psycopg2-binary==2.9.9",
+    "pydantic==2.5.0",
+    "PyJWT==2.8.0",
+    "python-dotenv==1.0.0",
+    "python-jose[cryptography]==3.3.0",
+    "python-multipart==0.0.6",
+    "requests==2.31.0",
+    "slowapi==0.1.9",
+    "sqlalchemy==2.0.23",
+    "sqlmodel==0.0.16",
+    "uvicorn[standard]==0.24.0",
 ]
 
 [project.scripts]
@@ -33,7 +41,7 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
