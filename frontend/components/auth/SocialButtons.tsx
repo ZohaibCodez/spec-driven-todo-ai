@@ -6,7 +6,7 @@ import { createAuthClient } from "better-auth/client";
 import { useToast } from '@/components/ui/Toast';
 
 const authClient = createAuthClient({
-  baseURL: "http://localhost:3000",
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
 });
 
 interface SocialButtonProps {
