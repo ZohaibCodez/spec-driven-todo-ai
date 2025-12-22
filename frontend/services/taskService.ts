@@ -23,7 +23,10 @@ async function getCurrentUserId(): Promise<number> {
     try {
       const user = JSON.parse(userStr);
       if (user.id) {
-        return typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
+        const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
+        if (!isNaN(userId) && userId > 0) {
+          return userId;
+        }
       }
     } catch (e) {
       console.error('Error parsing user data from localStorage:', e);
@@ -33,10 +36,13 @@ async function getCurrentUserId(): Promise<number> {
   // Fallback to Better Auth session if localStorage doesn't have user data
   const session = await getSession();
   if (session?.data?.user?.id) {
-    return typeof session.data.user.id === 'string' ? parseInt(session.data.user.id, 10) : session.data.user.id;
+    const userId = typeof session.data.user.id === 'string' ? parseInt(session.data.user.id, 10) : session.data.user.id;
+    if (!isNaN(userId) && userId > 0) {
+      return userId;
+    }
   }
 
-  throw new Error('User not authenticated');
+  throw new Error('User not authenticated or invalid user ID');
 }
 
 // Task service that manages task operations, including local caching and optimistic updates

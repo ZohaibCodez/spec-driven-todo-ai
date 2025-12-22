@@ -45,9 +45,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Use Better Auth client to get session
       const session = await authClient.getSession();
       
+      console.log('Better Auth session:', session); // Debug log
+      
       if (session.data?.user) {
         const betterAuthUser = session.data.user;
         const betterAuthSession = session.data.session;
+
+        console.log('Better Auth user:', betterAuthUser); // Debug log
+        console.log('Better Auth session:', betterAuthSession); // Debug log
 
         // Map Better Auth user to our User interface
         const mappedUser: User = {
@@ -60,11 +65,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           is_active: true,
         };
 
-        // Store in localStorage for backward compatibility
-        if (betterAuthSession?.token) {
-          localStorage.setItem('auth_token', betterAuthSession.token);
-          localStorage.setItem('user', JSON.stringify(mappedUser));
-          setToken(betterAuthSession.token);
+        // Get a valid JWT token from our API endpoint
+        try {
+          const jwtResponse = await fetch('/api/get-jwt-token', {
+            credentials: 'include', // Include cookies for Better Auth session
+          });
+          
+          if (jwtResponse.ok) {
+            const jwtData = await jwtResponse.json();
+            console.log('Got JWT token from API:', jwtData.token.substring(0, 20) + '...');
+            localStorage.setItem('auth_token', jwtData.token);
+            localStorage.setItem('user', JSON.stringify(mappedUser));
+            setToken(jwtData.token);
+          } else {
+            console.error('Failed to get JWT token from API');
+          }
+        } catch (jwtError) {
+          console.error('Error fetching JWT token:', jwtError);
         }
         
         setUser(mappedUser);

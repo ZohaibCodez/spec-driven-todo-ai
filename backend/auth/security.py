@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 import re
 import jwt
+from jwt.exceptions import InvalidTokenError
 from fastapi import HTTPException, status, Security, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
@@ -127,15 +128,25 @@ def verify_bearer_token(credentials: HTTPAuthorizationCredentials = Security(sec
     """
     try:
         token = credentials.credentials
+        
+        # Check if token is properly formatted (should have 3 parts separated by dots)
+        if not token or token.count('.') != 2:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token format",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         email: str = payload.get("email")
         user_id: int = payload.get("user_id") or payload.get("sub")  # Better Auth uses 'sub' for user ID
 
-        if email is None or user_id is None:
+        # Only require user_id (email is optional)
+        if user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token: missing user information",
+                detail="Invalid token: missing user ID",
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
@@ -152,10 +163,16 @@ def verify_bearer_token(credentials: HTTPAuthorizationCredentials = Security(sec
             detail="Token has expired",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except JWTError:
+    except InvalidTokenError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
+            detail=f"Could not validate credentials: {str(e)}",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Invalid token data: {str(e)}",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
