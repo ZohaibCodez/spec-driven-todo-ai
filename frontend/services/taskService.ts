@@ -7,42 +7,23 @@ import {
   SessionData
 } from '@/types/task';
 import { api } from '@/lib/api';
-import { getSession } from '@/lib/auth-client';
 
-// Helper function to get current user ID from session
+// Helper function to get current user ID from backend
 async function getCurrentUserId(): Promise<number> {
-  // First try to get from localStorage (faster for immediate access after auth)
-  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-  if (!token) {
-    throw new Error('User not authenticated');
-  }
-
-  // Try to parse user data from localStorage first (immediate availability)
-  const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
-  if (userStr) {
-    try {
-      const user = JSON.parse(userStr);
-      if (user.id) {
-        const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
-        if (!isNaN(userId) && userId > 0) {
-          return userId;
-        }
-      }
-    } catch (e) {
-      console.error('Error parsing user data from localStorage:', e);
+  try {
+    // Fetch the current user info from backend
+    // The backend will decode the JWT token and query the database for the numeric user ID
+    const user = await api.getCurrentUser();
+    
+    if (!user || !user.id) {
+      throw new Error('User data not available');
     }
+    
+    return user.id;
+  } catch (error) {
+    console.error('Error fetching user ID:', error);
+    throw new Error('User not authenticated or invalid user ID');
   }
-
-  // Fallback to Better Auth session if localStorage doesn't have user data
-  const session = await getSession();
-  if (session?.data?.user?.id) {
-    const userId = typeof session.data.user.id === 'string' ? parseInt(session.data.user.id, 10) : session.data.user.id;
-    if (!isNaN(userId) && userId > 0) {
-      return userId;
-    }
-  }
-
-  throw new Error('User not authenticated or invalid user ID');
 }
 
 // Task service that manages task operations, including local caching and optimistic updates

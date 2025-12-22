@@ -29,6 +29,23 @@ def create_user(user_data: UserCreate, session: Session = Depends(get_session)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.get("/users/me", response_model=UserResponse)
+def get_current_user_info(
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Get the current authenticated user's profile information.
+    """
+    return UserResponse(
+        id=current_user.id,
+        email=current_user.email,
+        name=current_user.name,
+        created_at=current_user.created_at,
+        updated_at=current_user.updated_at,
+        email_verified=current_user.email_verified,
+        is_active=current_user.is_active
+    )
+
 @router.put("/users/me", response_model=UserResponse)
 def update_current_user(
     user_update: UserUpdate,
