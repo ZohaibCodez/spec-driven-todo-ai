@@ -45,7 +45,13 @@ export default function AppPage() {
     if (!editingTask) return;
     
     try {
-      await updateTask(editingTask.id, taskData);
+      // Convert null values to undefined for UpdateTaskRequest compatibility
+      const updateData = {
+        ...taskData,
+        dueDate: taskData.dueDate === null ? undefined : taskData.dueDate,
+        category: taskData.category === null ? undefined : taskData.category,
+      };
+      await updateTask(editingTask.id, updateData);
       addToast('Task updated successfully!', 'success');
       setEditingTask(null);
     } catch (err) {
