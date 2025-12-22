@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Task, CreateTaskRequest, UpdateTaskRequest, TaskFilters } from '@/types/task';
 import { TaskService } from '@/services/taskService';
 import { useAnonymousSession } from './useLocalStorage';
-import { useAuth } from '../src/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 export function useTaskManager() {
   const [tasks, setTasks] = useState<Task[]>([]);

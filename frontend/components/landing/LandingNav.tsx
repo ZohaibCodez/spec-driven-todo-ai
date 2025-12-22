@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { User, LogOut, Settings } from 'lucide-react';
 
 export const LandingNav: React.FC = () => {

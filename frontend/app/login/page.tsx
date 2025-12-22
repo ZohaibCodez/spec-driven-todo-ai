@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/Toast';
 import { ArrowRight, Mail, Lock, Sparkles } from 'lucide-react';
 import { GoogleButton, GitHubButton, OrDivider } from '@/components/auth/SocialButtons';

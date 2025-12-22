@@ -7,7 +7,7 @@ import { Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 export const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
