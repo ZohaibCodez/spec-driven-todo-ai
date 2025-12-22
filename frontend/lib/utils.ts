@@ -102,7 +102,7 @@ export function normalizeString(str: string): string {
 
 // Validate title length (max 200 characters as per data model)
 export function isValidTitle(title: string): boolean {
-  return title && title.trim().length > 0 && title.length <= 200;
+  return !!title && title.trim().length > 0 && title.length <= 200;
 }
 
 // Validate description length (max 1000 characters as per data model)
@@ -119,7 +119,7 @@ export function isValidCategory(category?: string): boolean {
 
 // Validate tag length (max 30 characters as per data model)
 export function isValidTag(tag: string): boolean {
-  return tag && tag.trim().length > 0 && tag.length <= 30;
+  return !!tag && tag.trim().length > 0 && tag.length <= 30;
 }
 
 // Validate tags array (max 10 tags per task as per data model)

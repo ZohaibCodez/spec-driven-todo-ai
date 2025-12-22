@@ -13,10 +13,10 @@ interface SocialButtonProps {
   provider: 'google' | 'github';
   children: React.ReactNode;
   icon: React.ReactNode;
-  variant?: 'default' | 'outline';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
 }
 
-export function SocialButton({ provider, children, icon, variant = 'outline' }: SocialButtonProps) {
+export function SocialButton({ provider, children, icon, variant = 'secondary' }: SocialButtonProps) {
   const [loading, setLoading] = React.useState(false);
   const { addToast } = useToast();
 

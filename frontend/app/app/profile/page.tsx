@@ -36,7 +36,7 @@ export default function ProfilePage() {
     
     try {
       const session = await getSession();
-      const token = session?.data?.session?.access_token;
+      const token = session?.data?.session?.token;
       
       if (!token) {
         throw new Error('Not authenticated');

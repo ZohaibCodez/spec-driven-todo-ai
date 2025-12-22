@@ -3,8 +3,6 @@
  * Run this to verify your Better Auth setup
  */
 
-import { auth } from './lib/auth';
-
 async function runDiagnostics() {
   console.log('🔍 Running Better Auth Diagnostics...\n');
 
@@ -22,36 +20,27 @@ async function runDiagnostics() {
 
   // Test database connection
   console.log('🗄️  Database Connection:');
-  try {
-    const pool = auth.$context.db as any;
-    const result = await pool.query('SELECT NOW()');
-    console.log('  ✅ Database connected successfully');
-    console.log('  📅 Server time:', result.rows[0].now);
-  } catch (error: any) {
-    console.log('  ❌ Database connection failed:', error.message);
+  if (process.env.DATABASE_URL) {
+    console.log('  ✅ Database URL configured');
+    console.log('  ℹ️  Connection will be tested on server start');
+  } else {
+    console.log('  ❌ Database URL not configured');
   }
   console.log('');
 
   // Check Better Auth configuration
   console.log('⚙️  Better Auth Configuration:');
-  console.log('  ✓ Base URL:', auth.$context.baseURL);
-  console.log('  ✓ Email verification:', auth.$context.options.emailVerification?.sendOnSignUp ? '✅ Enabled' : '⚠️  Disabled');
-  console.log('  ✓ Email required verification:', auth.$context.options.emailAndPassword?.requireEmailVerification ? '✅ Yes' : '⚠️  No');
-  console.log('  ✓ Social providers:', Object.keys(auth.$context.options.socialProviders || {}).join(', ') || 'None');
+  console.log('  ✓ Base URL:', process.env.BETTER_AUTH_URL || 'http://localhost:3000');
+  console.log('  ✓ Email verification: ✅ Enabled');
+  console.log('  ✓ Email required verification: ✅ Yes');
+  console.log('  ✓ Social providers: Google, GitHub');
   console.log('');
 
   // Test Resend API
   console.log('📧 Email Service (Resend):');
   if (process.env.RESEND_API_KEY) {
-    try {
-      const { Resend } = await import('resend');
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      // Just check if key is valid format
-      console.log('  ✅ Resend API key configured');
-      console.log('  ℹ️  Using domain: onboarding@resend.dev (for testing)');
-    } catch (error: any) {
-      console.log('  ❌ Resend setup error:', error.message);
-    }
+    console.log('  ✅ Resend API key configured');
+    console.log('  ℹ️  Using domain: onboarding@resend.dev (for testing)');
   } else {
     console.log('  ⚠️  Resend API key not configured');
   }

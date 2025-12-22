@@ -10,7 +10,7 @@ const authClient = createAuthClient({
 });
 
 interface User {
-  id: number;
+  id: string;
   email: string;
   name: string | null;
   created_at: string;
@@ -51,11 +51,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // Map Better Auth user to our User interface
         const mappedUser: User = {
-          id: betterAuthUser.id as number,
+          id: betterAuthUser.id,
           email: betterAuthUser.email,
           name: betterAuthUser.name || null,
-          created_at: betterAuthUser.createdAt || new Date().toISOString(),
-          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+          created_at: betterAuthUser.createdAt ? new Date(betterAuthUser.createdAt).toISOString() : new Date().toISOString(),
+          updated_at: betterAuthUser.updatedAt ? new Date(betterAuthUser.updatedAt).toISOString() : new Date().toISOString(),
           email_verified: betterAuthUser.emailVerified || false,
           is_active: true,
         };
@@ -118,11 +118,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // Map Better Auth user to our User interface
         const mappedUser: User = {
-          id: betterAuthUser.id as number,
+          id: betterAuthUser.id,
           email: betterAuthUser.email,
           name: betterAuthUser.name || null,
-          created_at: betterAuthUser.createdAt || new Date().toISOString(),
-          updated_at: betterAuthUser.updatedAt || new Date().toISOString(),
+          created_at: betterAuthUser.createdAt ? new Date(betterAuthUser.createdAt).toISOString() : new Date().toISOString(),
+          updated_at: betterAuthUser.updatedAt ? new Date(betterAuthUser.updatedAt).toISOString() : new Date().toISOString(),
           email_verified: betterAuthUser.emailVerified || false,
           is_active: true, // Better Auth doesn't have this field, assume active
         };

@@ -29,8 +29,7 @@ export default function TasksPage() {
   const { addToast } = useToast();
   const [isAddingTask, setIsAddingTask] = React.useState(false);
   const [editingTask, setEditingTask] = React.useState<Task | null>(null);
-  const [filter, setFilter] = React.useState<'all' | 'active' | 'completed'>('all');
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [taskFilters, setTaskFilters] = React.useState<import('@/types/task').TaskFilters>({});
 
   // Check authentication
   React.useEffect(() => {
@@ -103,16 +102,24 @@ export default function TasksPage() {
   const filteredTasks = React.useMemo(() => {
     let filtered = tasks;
 
-    // Apply status filter
-    if (filter === 'active') {
-      filtered = filtered.filter(t => !t.completed);
-    } else if (filter === 'completed') {
-      filtered = filtered.filter(t => t.completed);
+    // Apply completed filter from taskFilters
+    if (taskFilters.completed !== undefined) {
+      filtered = filtered.filter(t => t.completed === taskFilters.completed);
+    }
+
+    // Apply category filter
+    if (taskFilters.category) {
+      filtered = filtered.filter(t => t.category === taskFilters.category);
+    }
+
+    // Apply tag filter
+    if (taskFilters.tag) {
+      filtered = filtered.filter(t => t.tags?.includes(taskFilters.tag!));
     }
 
     // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (taskFilters.search) {
+      const query = taskFilters.search.toLowerCase();
       filtered = filtered.filter(
         t =>
           t.title.toLowerCase().includes(query) ||
@@ -122,8 +129,22 @@ export default function TasksPage() {
       );
     }
 
+    // Apply sorting
+    if (taskFilters.sort) {
+      filtered = [...filtered].sort((a, b) => {
+        const aValue = a[taskFilters.sort!];
+        const bValue = b[taskFilters.sort!];
+        
+        if (aValue === undefined || aValue === null) return 1;
+        if (bValue === undefined || bValue === null) return -1;
+        
+        const comparison = aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+        return taskFilters.order === 'desc' ? -comparison : comparison;
+      });
+    }
+
     return filtered;
-  }, [tasks, filter, searchQuery]);
+  }, [tasks, taskFilters]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-indigo-950/30 dark:to-purple-950/30">
@@ -158,10 +179,7 @@ export default function TasksPage() {
 
         {/* Filters */}
         <TaskFilters
-          filter={filter}
-          onFilterChange={setFilter}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onFilterChange={setTaskFilters}
           className="mb-6"
         />
 
@@ -177,21 +195,19 @@ export default function TasksPage() {
         />
 
         {/* Add Task Modal */}
-        {isAddingTask && (
-          <AddTaskForm
-            onSubmit={handleCreateTask}
-            onClose={() => setIsAddingTask(false)}
-          />
-        )}
+        <AddTaskForm
+          open={isAddingTask}
+          onOpenChange={setIsAddingTask}
+          onSubmit={handleCreateTask}
+        />
 
         {/* Edit Task Modal */}
-        {editingTask && (
-          <AddTaskForm
-            task={editingTask}
-            onSubmit={handleUpdateTask}
-            onClose={() => setEditingTask(null)}
-          />
-        )}
+        <AddTaskForm
+          open={!!editingTask}
+          onOpenChange={(open) => !open && setEditingTask(null)}
+          onSubmit={handleUpdateTask}
+          initialData={editingTask || undefined}
+        />
       </main>
     </div>
   );

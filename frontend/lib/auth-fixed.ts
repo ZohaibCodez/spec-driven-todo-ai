@@ -39,9 +39,6 @@ export const auth = betterAuth({
   },
   // Keep the same JWT settings as your current system
   plugins: [
-    jwt({
-      algorithm: "HS256",
-      expiresIn: "7d", // Same as your current 7-day expiration
-    })
+    jwt()
   ],
 });

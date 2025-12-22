@@ -73,7 +73,7 @@ class ApiClient {
     return this.request('/api/tasks');
   }
 
-  async createTask(title: string, description?: string, userId: number) {
+  async createTask(title: string, userId: number, description?: string) {
     return this.request('/api/tasks', {
       method: 'POST',
       body: JSON.stringify({

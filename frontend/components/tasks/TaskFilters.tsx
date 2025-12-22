@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Task, TaskFilters } from '@/types/task';
+import { Task, type TaskFilters as TaskFiltersType } from '@/types/task';
 import { cn } from '@/lib/utils';
 
 interface TaskFiltersProps {
-  onFilterChange: (filters: TaskFilters) => void;
+  onFilterChange: (filters: TaskFiltersType) => void;
   className?: string;
 }
 
@@ -11,8 +11,8 @@ export function TaskFilters({ onFilterChange, className }: TaskFiltersProps) {
   const [status, setStatus] = useState<'all' | 'pending' | 'completed'>('all');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
-  const [sort, setSort] = useState<TaskFilters['sort']>('createdAt');
-  const [order, setOrder] = useState<TaskFilters['order']>('desc');
+  const [sort, setSort] = useState<TaskFiltersType['sort']>('createdAt');
+  const [order, setOrder] = useState<TaskFiltersType['order']>('desc');
   const [search, setSearch] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,7 +46,10 @@ export function TaskFilters({ onFilterChange, className }: TaskFiltersProps) {
     setOrder('desc');
     setSearch('');
     onFilterChange({
-      status: 'all',
+      completed: undefined,
+      category: undefined,
+      tag: undefined,
+      search: undefined,
       sort: 'createdAt',
       order: 'desc',
     });
@@ -63,7 +66,7 @@ export function TaskFilters({ onFilterChange, className }: TaskFiltersProps) {
             </label>
             <select
               value={status}
-              onChange={(e) => setStatus(e.target.value as TaskFilters['status'])}
+              onChange={(e) => setStatus(e.target.value as 'all' | 'pending' | 'completed')}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             >
               <option value="all">All Tasks</option>
@@ -107,7 +110,7 @@ export function TaskFilters({ onFilterChange, className }: TaskFiltersProps) {
             </label>
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as TaskFilters['sort'])}
+              onChange={(e) => setSort(e.target.value as TaskFiltersType['sort'])}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             >
               <option value="createdAt">Created Date</option>
@@ -124,7 +127,7 @@ export function TaskFilters({ onFilterChange, className }: TaskFiltersProps) {
             </label>
             <select
               value={order}
-              onChange={(e) => setOrder(e.target.value as TaskFilters['order'])}
+              onChange={(e) => setOrder(e.target.value as TaskFiltersType['order'])}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             >
               <option value="asc">Ascending</option>

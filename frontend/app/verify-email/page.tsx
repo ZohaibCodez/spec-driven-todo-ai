@@ -124,7 +124,7 @@ export default function VerifyEmailPage() {
                   </ul>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => router.push('/login')}
                   className="w-full"
                   size="lg"

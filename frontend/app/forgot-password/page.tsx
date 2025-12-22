@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const result = await authClient.forgetPassword({
+      const result = await authClient.requestPasswordReset({
         email,
         redirectTo: '/reset-password',
       });
@@ -87,7 +87,7 @@ export default function ForgotPasswordPage() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-3">
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => setEmailSent(false)}
               className="w-full"
             >

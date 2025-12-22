@@ -33,18 +33,20 @@ export const TaskItem = ({ task, onToggleCompletion, onEdit, onDelete, className
   };
 
   const handleSave = () => {
-    const updatedTask = {
+    const tagArray = editTags
+      ? editTags
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(tag => tag.length > 0)
+      : [];
+
+    const updatedTask: Task = {
       ...task,
       title: editTitle.trim(),
       description: editDescription.trim() || undefined,
       dueDate: editDueDate || undefined,
       category: editCategory.trim() || undefined,
-      tags: editTags
-        ? editTags
-            .split(',')
-            .map(tag => tag.trim())
-            .filter(tag => tag.length > 0)
-        : undefined,
+      tags: tagArray,
     };
 
     onEdit(updatedTask);
@@ -258,7 +260,7 @@ export const TaskItem = ({ task, onToggleCompletion, onEdit, onDelete, className
           </button>
 
           <button
-            onClick={onDelete}
+            onClick={() => onDelete(task.id)}
             className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
             aria-label="Delete task"
           >

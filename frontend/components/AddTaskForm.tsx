@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Task } from '@/types/task';
+import { CreateTaskRequest } from '@/types/task';
 import { cn } from '@/lib/utils';
 
 // Define the validation schema using Zod
@@ -33,7 +33,7 @@ const addTaskSchema = z.object({
 type AddTaskFormValues = z.infer<typeof addTaskSchema>;
 
 interface AddTaskFormProps {
-  onTaskCreate: (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'completed'>) => Promise<void>;
+  onTaskCreate: (taskData: CreateTaskRequest) => Promise<void>;
   categories?: string[];
   tags?: string[];
   className?: string;

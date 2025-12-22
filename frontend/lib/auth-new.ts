@@ -104,9 +104,6 @@ export const auth = betterAuth({
   
   // JWT plugin
   plugins: [
-    jwt({
-      algorithm: "HS256",
-      expiresIn: "7d",
-    })
+    jwt()
   ],
 });
