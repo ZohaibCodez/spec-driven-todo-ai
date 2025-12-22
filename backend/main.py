@@ -1,8 +1,13 @@
+import sys
+import os
+
+# Add parent directory to path for backend imports to work
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from database import create_db_and_tables
-import os
+from backend.database import create_db_and_tables
 
 # Load environment variables
 load_dotenv()
@@ -29,7 +34,7 @@ def on_startup():
     create_db_and_tables()
 
 # Include routes
-from routes import tasks, users
+from backend.routes import tasks, users
 
 app.include_router(tasks.router, prefix="/api", tags=["tasks"])
 app.include_router(users.router, prefix="/api", tags=["users"])

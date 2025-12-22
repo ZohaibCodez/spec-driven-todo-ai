@@ -10,10 +10,10 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
-from database import get_session
+from backend.database import get_session
 from sqlmodel import Session
-from models import User
-from services.user_service import UserService
+from backend.models import User
+from backend.services.user_service import UserService
 
 load_dotenv()
 

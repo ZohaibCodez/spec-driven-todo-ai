@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from models import User
-from schemas import UserCreate, UserUpdate
+from backend.models import User
+from backend.schemas import UserCreate, UserUpdate
 from typing import Optional
 
 class UserService:
