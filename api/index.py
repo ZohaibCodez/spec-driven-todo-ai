@@ -55,7 +55,7 @@ if FULL_BACKEND:
 def read_root():
     response = {
         "message": "Task Management API",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "status": "online",
         "full_backend": FULL_BACKEND,
         "docs": "/docs"
