@@ -33,7 +33,6 @@ export default function AppPage() {
         description: taskData.description,
         category: taskData.category || undefined,
         tags: taskData.tags,
-        completed: false,
       });
       addToast('Task created successfully!', 'success');
     } catch (err) {

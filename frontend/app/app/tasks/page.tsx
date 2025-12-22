@@ -50,7 +50,6 @@ export default function TasksPage() {
         description: taskData.description,
         category: taskData.category || undefined,
         tags: taskData.tags,
-        completed: false,
       });
       addToast('Task created successfully!', 'success');
       setIsAddingTask(false);
